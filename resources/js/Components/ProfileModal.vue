@@ -11,7 +11,7 @@ const props = defineProps({
     profile: Object,
 });
 
-const emit = defineEmits(['close', 'refresh', 'updatePic']);
+const emit = defineEmits(['close', 'refresh', 'updatePic', 'toast']);
 
 const form = ref({
     bio: props.profile?.bio || '',
@@ -26,14 +26,9 @@ const certForm = ref({ title: '', issued_by: '', file: null });
 const showCertForm = ref(false);
 const saved = ref(false);
 const processing = ref(false);
-const toastShow = ref(false);
-const toastMessage = ref('');
-const toastType = ref('success');
 
 const showToast = (message, type = 'success') => {
-    toastMessage.value = message;
-    toastType.value = type;
-    toastShow.value = true;
+    emit('toast', { message, type });
 };
 
 watch(() => props.profile, (newProfile) => {
@@ -234,5 +229,4 @@ const deleteCert = async (cert) => {
             </div>
         </div>
     </Modal>
-    <Toast :show="toastShow" :message="toastMessage" :type="toastType" @close="toastShow = false" />
 </template>

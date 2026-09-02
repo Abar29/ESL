@@ -1,9 +1,7 @@
 services:
   - type: web
     name: esl-scheduler
-    runtime: php
-    buildCommand: composer install --no-dev && npm install && npm run build
-    startCommand: php artisan serve --host=0.0.0.0 --port=$PORT
+    runtime: docker
     envVars:
       - key: APP_KEY
         value: base64:pBIl4DFTb4JWjthxNEsAoPTGXGMq/4KTHICTEu1bOcw=

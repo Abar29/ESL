@@ -29,11 +29,17 @@ const paymentDetails = computed(() => {
 });
 
 const formatDate = (date) => {
-    return new Date(date + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+    if (!date) return 'No Date';
+    const d = new Date(date.includes('T') ? date : date + 'T00:00:00');
+    if (isNaN(d.getTime())) return 'Invalid Date';
+    return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
 };
 
 const formatSlotDate = (date) => {
-    return new Date(date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    if (!date) return 'No Date';
+    const d = new Date(date.includes('T') ? date : date + 'T00:00:00');
+    if (isNaN(d.getTime())) return 'Invalid Date';
+    return d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 };
 
 const openBooking = (slot) => {

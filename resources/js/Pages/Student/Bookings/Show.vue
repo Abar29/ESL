@@ -15,7 +15,8 @@ const checkCanJoin = () => {
         canJoin.value = false;
         return;
     }
-    const sessionStart = new Date(`${props.booking.slot.slot_date}T${props.booking.slot.start_time}`);
+    const dateStr = props.booking.slot.slot_date.includes('T') ? props.booking.slot.slot_date.split('T')[0] : props.booking.slot.slot_date;
+    const sessionStart = new Date(`${dateStr}T${props.booking.slot.start_time}`);
     const diffMins = (sessionStart - new Date()) / 1000 / 60;
     canJoin.value = diffMins <= 10 && diffMins >= -60;
 };
@@ -66,7 +67,7 @@ const cancel = () => {
                     <div class="grid grid-cols-2 gap-4">
                         <div>
                             <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Date</p>
-                            <p class="mt-0.5 font-medium text-gray-900">{{ booking.slot?.slot_date }}</p>
+                            <p class="mt-0.5 font-medium text-gray-900">{{ booking.slot?.slot_date ? new Date(booking.slot.slot_date.includes('T') ? booking.slot.slot_date : booking.slot.slot_date + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }) : '' }}</p>
                         </div>
                         <div>
                             <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Time</p>

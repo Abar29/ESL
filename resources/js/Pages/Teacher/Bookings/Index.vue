@@ -35,7 +35,7 @@ const statusColor = (status) => {
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="font-medium text-gray-900">{{ booking.student?.name }}</p>
-                            <p class="text-sm text-gray-500">{{ booking.slot?.slot_date }} | {{ booking.slot?.start_time }} - {{ booking.slot?.end_time }}</p>
+                            <p class="text-sm text-gray-500">{{ booking.slot?.slot_date ? new Date(booking.slot.slot_date.includes('T') ? booking.slot.slot_date : booking.slot.slot_date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '' }} | {{ booking.slot?.start_time }} - {{ booking.slot?.end_time }}</p>
                             <p v-if="booking.payment_reference" class="text-sm text-gray-400">Ref: {{ booking.payment_reference }}</p>
                         </div>
                         <div class="flex items-center gap-3">

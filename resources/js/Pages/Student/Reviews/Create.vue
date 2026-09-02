@@ -31,7 +31,7 @@ const submit = () => {
                 <!-- Session Info -->
                 <div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
                     <p class="font-medium text-gray-900">Session with {{ booking.teacher?.user?.name }}</p>
-                    <p class="text-sm text-gray-500">{{ booking.slot?.slot_date }} · {{ booking.slot?.start_time }} - {{ booking.slot?.end_time }}</p>
+                    <p class="text-sm text-gray-500">{{ booking.slot?.slot_date ? new Date(booking.slot.slot_date.includes('T') ? booking.slot.slot_date : booking.slot.slot_date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '' }} · {{ booking.slot?.start_time }} - {{ booking.slot?.end_time }}</p>
                 </div>
 
                 <form @submit.prevent="submit" class="p-6 space-y-6">

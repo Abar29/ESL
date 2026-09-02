@@ -63,7 +63,7 @@ const cancelBooking = () => {
                         <!-- Session Info -->
                         <div class="p-4 bg-gray-50 rounded-lg">
                             <h4 class="text-sm font-medium text-gray-700 mb-2">Session</h4>
-                            <p class="font-medium">{{ booking.slot?.slot_date }}</p>
+                            <p class="font-medium">{{ booking.slot?.slot_date ? new Date(booking.slot.slot_date.includes('T') ? booking.slot.slot_date : booking.slot.slot_date + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }) : '' }}</p>
                             <p class="text-sm text-gray-500">{{ booking.slot?.start_time }} - {{ booking.slot?.end_time }}</p>
                         </div>
 

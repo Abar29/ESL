@@ -63,7 +63,7 @@ const complete = () => {
                     <div class="grid grid-cols-2 gap-4">
                         <div>
                             <p class="text-sm text-gray-500">Date</p>
-                            <p class="font-medium text-gray-900">{{ booking.slot?.slot_date }}</p>
+                            <p class="font-medium text-gray-900">{{ booking.slot?.slot_date ? new Date(booking.slot.slot_date.includes('T') ? booking.slot.slot_date : booking.slot.slot_date + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }) : '' }}</p>
                         </div>
                         <div>
                             <p class="text-sm text-gray-500">Time</p>

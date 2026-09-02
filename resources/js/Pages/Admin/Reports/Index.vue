@@ -95,7 +95,7 @@ const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
                                 <tr v-for="booking in recentBookings" :key="booking.id">
                                     <td class="px-4 py-2 text-sm">{{ booking.student?.name }}</td>
                                     <td class="px-4 py-2 text-sm">{{ booking.teacher?.user?.name }}</td>
-                                    <td class="px-4 py-2 text-sm">{{ booking.slot?.slot_date }}</td>
+                                    <td class="px-4 py-2 text-sm">{{ booking.slot?.slot_date ? new Date(booking.slot.slot_date.includes('T') ? booking.slot.slot_date : booking.slot.slot_date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '' }}</td>
                                     <td class="px-4 py-2">
                                         <span class="px-2 py-1 text-xs rounded-full" :class="{
                                             'bg-green-100 text-green-800': booking.status === 'confirmed',

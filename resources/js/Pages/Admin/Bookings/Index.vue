@@ -92,7 +92,7 @@ const statusColor = (status) => {
                                 <td class="px-4 py-3 text-sm">{{ booking.student?.name }}</td>
                                 <td class="px-4 py-3 text-sm">{{ booking.teacher?.user?.name }}</td>
                                 <td class="px-4 py-3 text-sm">
-                                    <div>{{ booking.slot?.slot_date }}</div>
+                                    <div>{{ booking.slot?.slot_date ? new Date(booking.slot.slot_date.includes('T') ? booking.slot.slot_date : booking.slot.slot_date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '' }}</div>
                                     <div class="text-gray-500">{{ booking.slot?.start_time }} - {{ booking.slot?.end_time }}</div>
                                 </td>
                                 <td class="px-4 py-3">

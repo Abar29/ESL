@@ -70,6 +70,7 @@ const cancelBooking = () => {
                         <!-- Payment Info -->
                         <div class="p-4 bg-gray-50 rounded-lg">
                             <h4 class="text-sm font-medium text-gray-700 mb-2">Payment</h4>
+                            <p class="font-bold text-indigo-600 text-lg">₱{{ booking.amount || '750.00' }}</p>
                             <p class="font-medium uppercase">{{ booking.payment_method }}</p>
                             <p class="text-sm text-gray-500">Ref: {{ booking.payment_reference }}</p>
                         </div>

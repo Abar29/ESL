@@ -22,7 +22,7 @@ class ReportController extends Controller
             'active_teachers' => TeacherProfile::where('approval_status', 'approved')->count(),
             'pending_approvals' => TeacherProfile::where('approval_status', 'pending')->count(),
             'total_students' => User::where('role', 'student')->count(),
-            'total_revenue' => Booking::where('status', 'completed')->count() * 100, // Assuming 100 per session
+            'total_revenue' => Booking::where('status', 'completed')->sum('amount'),
         ];
 
         $monthlyBookings = Booking::select(

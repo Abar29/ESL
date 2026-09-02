@@ -26,6 +26,7 @@ class Booking extends Model
         'payment_method',
         'payment_reference',
         'screenshot_path',
+        'amount',
         'held_until',
     ];
 
@@ -34,6 +35,7 @@ class Booking extends Model
         return [
             'status' => BookingStatus::class,
             'payment_method' => PaymentMethod::class,
+            'amount' => 'decimal:2',
             'held_until' => 'datetime',
         ];
     }

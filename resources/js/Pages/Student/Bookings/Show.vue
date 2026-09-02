@@ -78,6 +78,10 @@ const cancel = () => {
                             <p class="mt-0.5 font-medium text-gray-900 uppercase">{{ booking.payment_method }}</p>
                         </div>
                         <div>
+                            <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Amount</p>
+                            <p class="mt-0.5 font-bold text-indigo-600">₱{{ booking.amount || '750.00' }}</p>
+                        </div>
+                        <div>
                             <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Reference</p>
                             <p class="mt-0.5 font-medium text-gray-900">{{ booking.payment_reference }}</p>
                         </div>

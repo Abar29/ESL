@@ -39,8 +39,8 @@ const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
                         <div class="text-2xl font-bold">{{ stats.active_teachers }}</div>
                     </div>
                     <div class="bg-white shadow-sm sm:rounded-lg p-6">
-                        <div class="text-sm text-gray-500">Total Students</div>
-                        <div class="text-2xl font-bold">{{ stats.total_students }}</div>
+                        <div class="text-sm text-gray-500">Total Revenue</div>
+                        <div class="text-2xl font-bold text-indigo-600">₱{{ Number(stats.total_revenue).toLocaleString() }}</div>
                     </div>
                 </div>
 

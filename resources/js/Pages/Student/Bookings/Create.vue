@@ -41,6 +41,7 @@ const paymentDetails = {
                 <div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
                     <p class="font-medium text-gray-900">{{ slot.teacher?.user?.name }}</p>
                     <p class="text-sm text-gray-500">{{ slot.slot_date ? new Date(slot.slot_date.includes('T') ? slot.slot_date : slot.slot_date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '' }} · {{ slot.start_time }} - {{ slot.end_time }}</p>
+                    <p class="mt-2 text-lg font-bold text-indigo-600">₱750.00</p>
                 </div>
 
                 <form @submit.prevent="submit" class="p-6 space-y-6">

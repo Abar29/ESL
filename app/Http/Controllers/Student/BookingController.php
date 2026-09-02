@@ -68,6 +68,7 @@ class BookingController extends Controller
             'payment_method' => $validated['payment_method'],
             'payment_reference' => $validated['payment_reference'],
             'screenshot_path' => $screenshotPath,
+            'amount' => 750,
         ]);
 
         $slot->update(['status' => 'held']);

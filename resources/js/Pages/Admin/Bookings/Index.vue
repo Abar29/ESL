@@ -82,6 +82,7 @@ const statusColor = (status) => {
                                 <th class="px-4 py-3 text-left text-xs font-medium text-gray-500">Student</th>
                                 <th class="px-4 py-3 text-left text-xs font-medium text-gray-500">Teacher</th>
                                 <th class="px-4 py-3 text-left text-xs font-medium text-gray-500">Date/Time</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500">Amount</th>
                                 <th class="px-4 py-3 text-left text-xs font-medium text-gray-500">Status</th>
                                 <th class="px-4 py-3 text-left text-xs font-medium text-gray-500">Payment</th>
                                 <th class="px-4 py-3 text-right text-xs font-medium text-gray-500">Actions</th>
@@ -95,6 +96,7 @@ const statusColor = (status) => {
                                     <div>{{ booking.slot?.slot_date ? new Date(booking.slot.slot_date.includes('T') ? booking.slot.slot_date : booking.slot.slot_date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '' }}</div>
                                     <div class="text-gray-500">{{ booking.slot?.start_time }} - {{ booking.slot?.end_time }}</div>
                                 </td>
+                                <td class="px-4 py-3 text-sm font-bold text-indigo-600">₱{{ booking.amount || '750.00' }}</td>
                                 <td class="px-4 py-3">
                                     <span :class="[statusColor(booking.status), 'px-2 py-1 text-xs font-medium rounded-full']">
                                         {{ booking.status.replace('_', ' ') }}

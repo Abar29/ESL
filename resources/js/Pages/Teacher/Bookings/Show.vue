@@ -94,6 +94,10 @@ const complete = () => {
                             <p class="font-medium text-gray-900 uppercase">{{ booking.payment_method }}</p>
                         </div>
                         <div>
+                            <p class="text-sm text-gray-500">Amount</p>
+                            <p class="font-bold text-indigo-600">₱{{ booking.amount || '750.00' }}</p>
+                        </div>
+                        <div>
                             <p class="text-sm text-gray-500">Reference Number</p>
                             <p class="font-medium text-gray-900">{{ booking.payment_reference }}</p>
                         </div>

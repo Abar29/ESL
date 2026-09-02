@@ -27,7 +27,11 @@ class CloudinaryService
     public function upload(UploadedFile $file, string $folder = 'uploads'): ?string
     {
         if (!$this->isConfigured()) {
-            Log::warning('Cloudinary: Not configured');
+            Log::warning('Cloudinary not configured', [
+                'cloud' => $this->cloudName ? 'set' : 'empty',
+                'key' => $this->apiKey ? 'set' : 'empty',
+                'secret' => $this->apiSecret ? 'set' : 'empty',
+            ]);
             return null;
         }
 
@@ -39,25 +43,35 @@ class CloudinaryService
         $signature = $this->generateSignature($params);
 
         $fileContent = file_get_contents($file->getRealPath());
+        $mimeType = $file->getMimeType();
 
-        $response = Http::attach('file', $fileContent, $file->getClientOriginalName())
-            ->post("https://api.cloudinary.com/v1_1/{$this->cloudName}/image/upload", [
-                'api_key' => $this->apiKey,
-                'timestamp' => $timestamp,
-                'folder' => $folder,
-                'signature' => $signature,
-            ]);
+        $url = "https://api.cloudinary.com/v1_1/{$this->cloudName}/image/upload";
+
+        // Use multipart with all fields together
+        $response = Http::attach(
+            'file',
+            $fileContent,
+            $file->getClientOriginalName(),
+            ['Content-Type' => $mimeType]
+        )->post($url, [
+            'api_key' => $this->apiKey,
+            'timestamp' => $timestamp,
+            'folder' => $folder,
+            'signature' => $signature,
+        ]);
 
         if ($response->successful()) {
-            $url = $response->json('secure_url');
-            Log::info('Cloudinary: Upload success', ['url' => $url]);
-            return $url;
+            $result = $response->json('secure_url');
+            Log::info('Cloudinary upload success', ['url' => $result]);
+            return $result;
         }
 
-        Log::error('Cloudinary: Upload failed', [
+        Log::error('Cloudinary upload failed', [
             'status' => $response->status(),
-            'body' => $response->body(),
+            'response' => $response->body(),
+            'url' => $url,
         ]);
+
         return null;
     }
 

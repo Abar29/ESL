@@ -74,7 +74,20 @@ class UserController extends Controller
             'status' => 'required|in:active,suspended',
         ]);
 
+        $oldRole = $user->role;
         $user->update($validated);
+
+        if ($validated['role'] === 'teacher' && $oldRole !== 'teacher') {
+            if (!$user->teacherProfile) {
+                TeacherProfile::create([
+                    'id' => Str::uuid(),
+                    'user_id' => $user->id,
+                    'approval_status' => 'pending',
+                ]);
+            } else {
+                $user->teacherProfile->update(['approval_status' => 'pending']);
+            }
+        }
 
         return back()->with('success', 'User updated.');
     }

@@ -75,15 +75,20 @@ class ProfileController extends Controller
         $cloudinary = app(CloudinaryService::class);
 
         if ($cloudinary->isConfigured()) {
-            if ($profile->profile_pic && str_starts_with($profile->profile_pic, 'http')) {
-                $cloudinary->delete($profile->profile_pic);
+            try {
+                if ($profile->profile_pic && str_starts_with($profile->profile_pic, 'http')) {
+                    $cloudinary->delete($profile->profile_pic);
+                }
+                $url = $cloudinary->upload($request->file('profile_pic'), 'profile-pics');
+                if ($url) {
+                    $profile->update(['profile_pic' => $url]);
+                    return response()->json(['success' => true, 'profile_pic' => $url, 'message' => 'Profile picture uploaded.']);
+                }
+                return response()->json(['error' => 'Cloudinary upload returned null. Check logs.'], 500);
+            } catch (\Exception $e) {
+                \Log::error('Cloudinary upload exception', ['error' => $e->getMessage()]);
+                return response()->json(['error' => 'Upload failed: ' . $e->getMessage()], 500);
             }
-            $url = $cloudinary->upload($request->file('profile_pic'), 'profile-pics');
-            if ($url) {
-                $profile->update(['profile_pic' => $url]);
-                return response()->json(['success' => true, 'profile_pic' => $url, 'message' => 'Profile picture uploaded.']);
-            }
-            return response()->json(['error' => 'Failed to upload to Cloudinary.'], 500);
         }
 
         // Fallback to local

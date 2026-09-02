@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class CloudinaryService
@@ -27,11 +26,7 @@ class CloudinaryService
     public function upload(UploadedFile $file, string $folder = 'uploads'): ?string
     {
         if (!$this->isConfigured()) {
-            Log::warning('Cloudinary not configured', [
-                'cloud' => $this->cloudName ? 'set' : 'empty',
-                'key' => $this->apiKey ? 'set' : 'empty',
-                'secret' => $this->apiSecret ? 'set' : 'empty',
-            ]);
+            Log::warning('Cloudinary not configured');
             return null;
         }
 
@@ -42,34 +37,47 @@ class CloudinaryService
         ];
         $signature = $this->generateSignature($params);
 
-        $fileContent = file_get_contents($file->getRealPath());
-        $mimeType = $file->getMimeType();
-
         $url = "https://api.cloudinary.com/v1_1/{$this->cloudName}/image/upload";
 
-        // Use multipart with all fields together
-        $response = Http::attach(
-            'file',
-            $fileContent,
-            $file->getClientOriginalName(),
-            ['Content-Type' => $mimeType]
-        )->post($url, [
+        $postData = [
+            'file' => new \CURLFile(
+                $file->getRealPath(),
+                $file->getMimeType(),
+                $file->getClientOriginalName()
+            ),
             'api_key' => $this->apiKey,
             'timestamp' => $timestamp,
             'folder' => $folder,
             'signature' => $signature,
-        ]);
+        ];
 
-        if ($response->successful()) {
-            $result = $response->json('secure_url');
-            Log::info('Cloudinary upload success', ['url' => $result]);
-            return $result;
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+        $response = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $error = curl_error($ch);
+        curl_close($ch);
+
+        if ($error) {
+            Log::error('Cloudinary cURL error', ['error' => $error]);
+            return null;
+        }
+
+        $result = json_decode($response, true);
+
+        if ($httpCode === 200 && isset($result['secure_url'])) {
+            Log::info('Cloudinary upload success', ['url' => $result['secure_url']]);
+            return $result['secure_url'];
         }
 
         Log::error('Cloudinary upload failed', [
-            'status' => $response->status(),
-            'response' => $response->body(),
-            'url' => $url,
+            'http_code' => $httpCode,
+            'response' => $result,
         ]);
 
         return null;
@@ -92,14 +100,25 @@ class CloudinaryService
         ];
         $signature = $this->generateSignature($params);
 
-        $response = Http::post("https://api.cloudinary.com/v1_1/{$this->cloudName}/image/destroy", [
+        $postData = [
             'public_id' => $publicId,
             'timestamp' => $timestamp,
             'api_key' => $this->apiKey,
             'signature' => $signature,
-        ]);
+        ];
 
-        return $response->successful() && $response->json('result') === 'ok';
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, "https://api.cloudinary.com/v1_1/{$this->cloudName}/image/destroy");
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+        $response = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        $result = json_decode($response, true);
+        return $httpCode === 200 && isset($result['result']) && $result['result'] === 'ok';
     }
 
     private function generateSignature(array $params): string

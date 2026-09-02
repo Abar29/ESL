@@ -4,20 +4,19 @@ namespace App\Services;
 
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class CloudinaryService
 {
     private string $cloudName;
     private string $apiKey;
     private string $apiSecret;
-    private string $uploadUrl;
 
     public function __construct()
     {
-        $this->cloudName = config('services.cloudinary.cloud_name');
-        $this->apiKey = config('services.cloudinary.api_key');
-        $this->apiSecret = config('services.cloudinary.api_secret');
-        $this->uploadUrl = "https://api.cloudinary.com/v1_1/{$this->cloudName}/image/upload";
+        $this->cloudName = config('services.cloudinary.cloud_name') ?? '';
+        $this->apiKey = config('services.cloudinary.api_key') ?? '';
+        $this->apiSecret = config('services.cloudinary.api_secret') ?? '';
     }
 
     public function isConfigured(): bool
@@ -28,30 +27,37 @@ class CloudinaryService
     public function upload(UploadedFile $file, string $folder = 'uploads'): ?string
     {
         if (!$this->isConfigured()) {
+            Log::warning('Cloudinary: Not configured');
             return null;
         }
 
-        $timestamp = now()->timestamp;
+        $timestamp = (string) time();
         $params = [
             'folder' => $folder,
             'timestamp' => $timestamp,
         ];
-
         $signature = $this->generateSignature($params);
 
-        $response = Http::attach(
-            'file', file_get_contents($file->getRealPath()), $file->getClientOriginalName()
-        )
-        ->attach('api_key', $this->apiKey)
-        ->attach('timestamp', (string) $timestamp)
-        ->attach('folder', $folder)
-        ->attach('signature', $signature)
-        ->post($this->uploadUrl);
+        $fileContent = file_get_contents($file->getRealPath());
+
+        $response = Http::attach('file', $fileContent, $file->getClientOriginalName())
+            ->post("https://api.cloudinary.com/v1_1/{$this->cloudName}/image/upload", [
+                'api_key' => $this->apiKey,
+                'timestamp' => $timestamp,
+                'folder' => $folder,
+                'signature' => $signature,
+            ]);
 
         if ($response->successful()) {
-            return $response->json('secure_url');
+            $url = $response->json('secure_url');
+            Log::info('Cloudinary: Upload success', ['url' => $url]);
+            return $url;
         }
 
+        Log::error('Cloudinary: Upload failed', [
+            'status' => $response->status(),
+            'body' => $response->body(),
+        ]);
         return null;
     }
 
@@ -61,17 +67,15 @@ class CloudinaryService
             return false;
         }
 
-        // Extract public_id from URL
         $path = parse_url($url, PHP_URL_PATH);
         $publicId = preg_replace('#^/[^/]+/image/upload/#', '', $path);
-        $publicId = preg_replace('#\.[^.]+$#', '', $publicId); // remove extension
+        $publicId = preg_replace('#\.[^.]+$#', '', $publicId);
 
-        $timestamp = now()->timestamp;
+        $timestamp = (string) time();
         $params = [
             'public_id' => $publicId,
             'timestamp' => $timestamp,
         ];
-
         $signature = $this->generateSignature($params);
 
         $response = Http::post("https://api.cloudinary.com/v1_1/{$this->cloudName}/image/destroy", [

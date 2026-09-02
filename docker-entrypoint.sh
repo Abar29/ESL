@@ -1,11 +1,12 @@
 #!/bin/bash
 
-# Clear cached config so env vars from Render are used fresh
+# Clear ALL caches so fresh env vars are picked up
 php artisan config:clear
 php artisan route:clear
 php artisan view:clear
+php artisan cache:clear
 
-# Cache config with current env vars
+# Re-cache with current env vars
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache

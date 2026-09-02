@@ -100,7 +100,7 @@ const deleteCert = async (cert) => {
 </script>
 
 <template>
-    <Modal :show="show" @close="emit('close')" max-width="2xl">
+    <Modal :show="show" @close="emit('close')" max-width="4xl">
         <div class="p-6 max-h-[80vh] overflow-y-auto">
             <h3 class="text-lg font-semibold text-gray-900 mb-4">My Profile</h3>
 

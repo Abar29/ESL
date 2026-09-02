@@ -51,7 +51,9 @@ const deleteSlot = (id) => {
 };
 
 const formatDate = (dateStr) => {
-    const date = new Date(dateStr + 'T00:00:00');
+    if (!dateStr) return 'No Date';
+    const date = new Date(dateStr.includes('T') ? dateStr : dateStr + 'T00:00:00');
+    if (isNaN(date.getTime())) return 'Invalid Date';
     return date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 };
 </script>

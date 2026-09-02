@@ -67,7 +67,7 @@ const submitPassword = async () => {
 </script>
 
 <template>
-    <Modal :show="show" @close="emit('close')" max-width="lg">
+    <Modal :show="show" @close="emit('close')" max-width="2xl">
         <div class="p-6 max-h-[80vh] overflow-y-auto">
             <h3 class="text-lg font-semibold text-gray-900 mb-6">Settings</h3>
 

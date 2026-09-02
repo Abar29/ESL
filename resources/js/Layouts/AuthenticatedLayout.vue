@@ -198,7 +198,6 @@ const isActive = (href) => {
                                 </button>
                             </template>
                             <template #content>
-                                <DropdownLink href="/profile">Profile</DropdownLink>
                                 <DropdownLink as="button" method="post" href="/logout">Log Out</DropdownLink>
                             </template>
                         </Dropdown>

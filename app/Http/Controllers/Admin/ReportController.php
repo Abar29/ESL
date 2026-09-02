@@ -26,11 +26,12 @@ class ReportController extends Controller
         ];
 
         $monthlyBookings = Booking::select(
-            DB::raw('MONTH(created_at) as month'),
+            DB::raw("EXTRACT(MONTH FROM created_at) as month"),
             DB::raw('COUNT(*) as count')
         )
-            ->whereYear('created_at', now()->year)
-            ->groupBy(DB::raw('MONTH(created_at)'))
+            ->where('created_at', '>=', now()->startOfYear())
+            ->where('created_at', '<=', now()->endOfYear())
+            ->groupBy(DB::raw("EXTRACT(MONTH FROM created_at)"))
             ->orderBy('month')
             ->get();
 

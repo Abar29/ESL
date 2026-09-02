@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Create SQLite database if it doesn't exist
-touch /tmp/database.sqlite
-
 # Clear cached config so env vars from Render are used fresh
 php artisan config:clear
 php artisan route:clear

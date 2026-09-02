@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: esl-scheduler
+    runtime: php
+    buildCommand: composer install --no-dev && npm install && npm run build
+    startCommand: php artisan serve --host=0.0.0.0 --port=$PORT
+    envVars:
+      - key: APP_KEY
+        value: base64:pBIl4DFTb4JWjthxNEsAoPTGXGMq/4KTHICTEu1bOcw=
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: "true"
+      - key: DB_CONNECTION
+        value: sqlite
+      - key: DB_DATABASE
+        value: /tmp/database.sqlite

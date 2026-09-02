@@ -36,10 +36,8 @@ class AvailabilityController extends Controller
 
         $overlapping = AvailabilitySlot::where('teacher_id', $user->teacherProfile->id)
             ->where('slot_date', $validated['slot_date'])
-            ->where(function ($query) use ($validated) {
-                $query->whereBetween('start_time', [$validated['start_time'], $validated['end_time']])
-                    ->orWhereBetween('end_time', [$validated['start_time'], $validated['end_time']]);
-            })
+            ->where('start_time', '<', $validated['end_time'])
+            ->where('end_time', '>', $validated['start_time'])
             ->exists();
 
         if ($overlapping) {

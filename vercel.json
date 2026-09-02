@@ -1,21 +1,19 @@
 {
-    "version": 2,
-    "builds": [
-        {
-            "src": "public/index.php",
-            "use": "@vercel/php",
-            "config": {
-                "includeFiles": [
-                    "vendor/**",
-                    "bootstrap/**",
-                    "config/**",
-                    "app/**",
-                    "routes/**",
-                    "database/**"
-                ]
-            }
+    "functions": {
+        "public/index.php": {
+            "runtime": "@vercel/php",
+            "includeFiles": [
+                "vendor/**",
+                "bootstrap/**",
+                "config/**",
+                "app/**",
+                "routes/**",
+                "database/**",
+                "resources/**",
+                "public/**"
+            ]
         }
-    ],
+    },
     "routes": [
         {
             "src": "/build/(.*)",

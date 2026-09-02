@@ -1,5 +1,6 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import Toast from '@/Components/Toast.vue';
 import { Head, useForm, router } from '@inertiajs/vue3';
 import { ref, computed } from 'vue';
 
@@ -8,6 +9,15 @@ const props = defineProps({
 });
 
 const showForm = ref(false);
+const toastShow = ref(false);
+const toastMessage = ref('');
+const toastType = ref('success');
+
+const showToast = (message, type = 'success') => {
+    toastMessage.value = message;
+    toastType.value = type;
+    toastShow.value = true;
+};
 
 const form = useForm({
     slot_date: '',
@@ -40,13 +50,20 @@ const submit = () => {
         onSuccess: () => {
             showForm.value = false;
             form.reset();
+            showToast('Time slot added successfully!');
+        },
+        onError: () => {
+            showToast(form.errors.slot_date || 'Failed to add slot.', 'error');
         },
     });
 };
 
 const deleteSlot = (id) => {
     if (confirm('Delete this slot?')) {
-        router.delete(`/teacher/availability/${id}`);
+        router.delete(`/teacher/availability/${id}`, {
+            onSuccess: () => showToast('Time slot deleted.'),
+            onError: () => showToast('Failed to delete slot.', 'error'),
+        });
     }
 };
 
@@ -144,4 +161,5 @@ const formatDate = (dateStr) => {
             </div>
         </div>
     </AuthenticatedLayout>
+    <Toast :show="toastShow" :message="toastMessage" :type="toastType" @close="toastShow = false" />
 </template>

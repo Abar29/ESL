@@ -4,7 +4,9 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
+import Toast from '@/Components/Toast.vue';
 import { Head, useForm } from '@inertiajs/vue3';
+import { ref } from 'vue';
 
 const form = useForm({
     name: '',
@@ -14,8 +16,21 @@ const form = useForm({
     phone: '',
 });
 
+const toastShow = ref(false);
+const toastMessage = ref('');
+const toastType = ref('success');
+
+const showToast = (message, type = 'success') => {
+    toastMessage.value = message;
+    toastType.value = type;
+    toastShow.value = true;
+};
+
 const submit = () => {
-    form.post(route('admin.users.store'));
+    form.post(route('admin.users.store'), {
+        onSuccess: () => showToast('User created successfully!'),
+        onError: () => showToast('Failed to create user.', 'error'),
+    });
 };
 </script>
 
@@ -75,4 +90,5 @@ const submit = () => {
             </div>
         </div>
     </AuthenticatedLayout>
+    <Toast :show="toastShow" :message="toastMessage" :type="toastType" @close="toastShow = false" />
 </template>

@@ -1,6 +1,7 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import InputError from '@/Components/InputError.vue';
+import Toast from '@/Components/Toast.vue';
 import { Head, useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
@@ -14,9 +15,21 @@ const form = useForm({
 });
 
 const hoverRating = ref(0);
+const toastShow = ref(false);
+const toastMessage = ref('');
+const toastType = ref('success');
+
+const showToast = (message, type = 'success') => {
+    toastMessage.value = message;
+    toastType.value = type;
+    toastShow.value = true;
+};
 
 const submit = () => {
-    form.post(`/student/bookings/${props.booking.id}/review`);
+    form.post(`/student/bookings/${props.booking.id}/review`, {
+        onSuccess: () => showToast('Review submitted successfully!'),
+        onError: () => showToast('Failed to submit review.', 'error'),
+    });
 };
 </script>
 
@@ -85,4 +98,5 @@ const submit = () => {
             </div>
         </div>
     </AuthenticatedLayout>
+    <Toast :show="toastShow" :message="toastMessage" :type="toastType" @close="toastShow = false" />
 </template>

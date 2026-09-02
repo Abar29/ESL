@@ -1,18 +1,36 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import Toast from '@/Components/Toast.vue';
 import { Head, router } from '@inertiajs/vue3';
+import { ref } from 'vue';
 
 const props = defineProps({
     teachers: Object,
 });
 
+const toastShow = ref(false);
+const toastMessage = ref('');
+const toastType = ref('success');
+
+const showToast = (message, type = 'success') => {
+    toastMessage.value = message;
+    toastType.value = type;
+    toastShow.value = true;
+};
+
 const approve = (teacher) => {
-    router.post(route('admin.teacher-approvals.approve', teacher.id));
+    router.post(route('admin.teacher-approvals.approve', teacher.id), {}, {
+        onSuccess: () => showToast('Teacher approved!'),
+        onError: () => showToast('Failed to approve teacher.', 'error'),
+    });
 };
 
 const reject = (teacher) => {
     if (confirm('Are you sure you want to reject this teacher?')) {
-        router.post(route('admin.teacher-approvals.reject', teacher.id));
+        router.post(route('admin.teacher-approvals.reject', teacher.id), {}, {
+            onSuccess: () => showToast('Teacher rejected.'),
+            onError: () => showToast('Failed to reject teacher.', 'error'),
+        });
     }
 };
 </script>
@@ -62,4 +80,5 @@ const reject = (teacher) => {
             </div>
         </div>
     </AuthenticatedLayout>
+    <Toast :show="toastShow" :message="toastMessage" :type="toastType" @close="toastShow = false" />
 </template>

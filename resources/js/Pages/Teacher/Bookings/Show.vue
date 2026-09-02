@@ -1,11 +1,22 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import Toast from '@/Components/Toast.vue';
 import { Head, router } from '@inertiajs/vue3';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 
 const props = defineProps({
     booking: Object,
 });
+
+const toastShow = ref(false);
+const toastMessage = ref('');
+const toastType = ref('success');
+
+const showToast = (message, type = 'success') => {
+    toastMessage.value = message;
+    toastType.value = type;
+    toastShow.value = true;
+};
 
 const statusColor = (status) => {
     const colors = {
@@ -26,18 +37,27 @@ const canComplete = computed(() => {
 });
 
 const accept = () => {
-    router.post(`/teacher/bookings/${props.booking.id}/accept`);
+    router.post(`/teacher/bookings/${props.booking.id}/accept`, {}, {
+        onSuccess: () => showToast('Booking accepted!'),
+        onError: () => showToast('Failed to accept booking.', 'error'),
+    });
 };
 
 const decline = () => {
     if (confirm('Are you sure you want to decline this booking?')) {
-        router.post(`/teacher/bookings/${props.booking.id}/decline`);
+        router.post(`/teacher/bookings/${props.booking.id}/decline`, {}, {
+            onSuccess: () => showToast('Booking declined.'),
+            onError: () => showToast('Failed to decline booking.', 'error'),
+        });
     }
 };
 
 const complete = () => {
     if (confirm('Mark this session as completed?')) {
-        router.post(`/teacher/bookings/${props.booking.id}/complete`);
+        router.post(`/teacher/bookings/${props.booking.id}/complete`, {}, {
+            onSuccess: () => showToast('Session marked as completed!'),
+            onError: () => showToast('Failed to complete session.', 'error'),
+        });
     }
 };
 </script>
@@ -104,4 +124,5 @@ const complete = () => {
             </div>
         </div>
     </AuthenticatedLayout>
+    <Toast :show="toastShow" :message="toastMessage" :type="toastType" @close="toastShow = false" />
 </template>

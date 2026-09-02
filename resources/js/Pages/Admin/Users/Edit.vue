@@ -4,7 +4,9 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
+import Toast from '@/Components/Toast.vue';
 import { Head, useForm } from '@inertiajs/vue3';
+import { ref } from 'vue';
 
 const props = defineProps({
     user: Object,
@@ -18,8 +20,21 @@ const form = useForm({
     status: props.user.status,
 });
 
+const toastShow = ref(false);
+const toastMessage = ref('');
+const toastType = ref('success');
+
+const showToast = (message, type = 'success') => {
+    toastMessage.value = message;
+    toastType.value = type;
+    toastShow.value = true;
+};
+
 const submit = () => {
-    form.put(route('admin.users.update', props.user.id));
+    form.put(route('admin.users.update', props.user.id), {
+        onSuccess: () => showToast('User updated successfully!'),
+        onError: () => showToast('Failed to update user.', 'error'),
+    });
 };
 </script>
 
@@ -82,4 +97,5 @@ const submit = () => {
             </div>
         </div>
     </AuthenticatedLayout>
+    <Toast :show="toastShow" :message="toastMessage" :type="toastType" @close="toastShow = false" />
 </template>

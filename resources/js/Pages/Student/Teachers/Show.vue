@@ -135,9 +135,12 @@ const submit = () => {
                                     <p class="font-medium text-gray-900">{{ formatDate(slot.slot_date) }}</p>
                                     <p class="text-sm text-gray-500">{{ slot.start_time }} - {{ slot.end_time }}</p>
                                 </div>
-                                <button @click="openBooking(slot)" class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700">
-                                    Book Now
-                                </button>
+                                <div class="flex items-center gap-4">
+                                    <span class="text-lg font-bold text-indigo-600">₱750</span>
+                                    <button @click="openBooking(slot)" class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700">
+                                        Book Now
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -164,6 +167,7 @@ const submit = () => {
                     <div class="p-4 bg-gray-50 rounded-lg">
                         <p class="font-medium text-gray-900">{{ teacher.user?.name }}</p>
                         <p class="text-sm text-gray-500">{{ selectedSlot ? formatSlotDate(selectedSlot.slot_date) : '' }} · {{ selectedSlot?.start_time }} - {{ selectedSlot?.end_time }}</p>
+                        <p class="mt-2 text-lg font-bold text-indigo-600">₱750.00</p>
                     </div>
 
                     <!-- Payment Method -->

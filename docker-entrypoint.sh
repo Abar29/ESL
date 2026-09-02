@@ -15,6 +15,9 @@ php artisan route:cache
 # Run database migrations
 php artisan migrate --force
 
+# Seed roles, permissions, and admin user
+php artisan db:seed --force
+
 # Create storage link
 php artisan storage:link --force
 

@@ -4,6 +4,7 @@ import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import ProfileModal from '@/Components/ProfileModal.vue';
 import SettingsModal from '@/Components/SettingsModal.vue';
+import Toast from '@/Components/Toast.vue';
 import { Link, usePage } from '@inertiajs/vue3';
 import axios from 'axios';
 
@@ -16,6 +17,7 @@ const currentPath = computed(() => page.url);
 const showProfileModal = ref(false);
 const showSettingsModal = ref(false);
 const teacherProfile = ref(null);
+const profilePic = ref(null);
 
 const goTo = (href) => {
     sidebarOpen.value = false;
@@ -34,9 +36,16 @@ const fetchTeacherProfile = async () => {
     try {
         const response = await axios.get('/teacher/profile/data');
         teacherProfile.value = response.data.profile;
+        if (response.data.profile?.profile_pic) {
+            profilePic.value = response.data.profile.profile_pic;
+        }
     } catch (e) {
         teacherProfile.value = null;
     }
+};
+
+const updateProfilePic = () => {
+    fetchTeacherProfile();
 };
 
 const openSettingsModal = () => {
@@ -77,6 +86,12 @@ const navigation = computed(() => {
 const isActive = (href) => {
     return currentPath.value === href || currentPath.value.startsWith(href + '/');
 };
+
+onMounted(() => {
+    if (userRole.value === 'teacher') {
+        fetchTeacherProfile();
+    }
+});
 </script>
 
 <template>
@@ -128,8 +143,9 @@ const isActive = (href) => {
                 <!-- User section -->
                 <div class="border-t border-gray-100 px-3 py-4">
                     <div class="flex items-center gap-3 px-3 py-2">
-                        <div class="w-9 h-9 bg-indigo-100 rounded-full flex items-center justify-center flex-shrink-0">
-                            <span class="text-sm font-semibold text-indigo-700">{{ user?.name?.charAt(0)?.toUpperCase() }}</span>
+                        <div class="w-9 h-9 bg-indigo-100 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden">
+                            <img v-if="profilePic" :src="'/storage/' + profilePic" class="w-9 h-9 rounded-full object-cover" />
+                            <span v-else class="text-sm font-semibold text-indigo-700">{{ user?.name?.charAt(0)?.toUpperCase() }}</span>
                         </div>
                         <div class="flex-1 min-w-0">
                             <p class="text-sm font-medium text-gray-900 truncate">{{ user?.name }}</p>
@@ -188,8 +204,9 @@ const isActive = (href) => {
                         <Dropdown align="right" width="48">
                             <template #trigger>
                                 <button class="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100">
-                                    <div class="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center">
-                                        <span class="text-sm font-semibold text-indigo-700">{{ user?.name?.charAt(0)?.toUpperCase() }}</span>
+                                    <div class="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center overflow-hidden">
+                                        <img v-if="profilePic" :src="'/storage/' + profilePic" class="w-8 h-8 rounded-full object-cover" />
+                                        <span v-else class="text-sm font-semibold text-indigo-700">{{ user?.name?.charAt(0)?.toUpperCase() }}</span>
                                     </div>
                                     <span class="hidden sm:block text-sm font-medium text-gray-700">{{ user?.name }}</span>
                                     <svg class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -216,6 +233,7 @@ const isActive = (href) => {
             :profile="teacherProfile"
             @close="showProfileModal = false"
             @refresh="fetchTeacherProfile"
+            @updatePic="updateProfilePic"
         />
         <SettingsModal
             :show="showSettingsModal"

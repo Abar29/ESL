@@ -1,6 +1,7 @@
 <script setup>
 import Modal from '@/Components/Modal.vue';
 import InputError from '@/Components/InputError.vue';
+import Toast from '@/Components/Toast.vue';
 import { router } from '@inertiajs/vue3';
 import { ref, watch } from 'vue';
 import axios from 'axios';
@@ -10,7 +11,7 @@ const props = defineProps({
     profile: Object,
 });
 
-const emit = defineEmits(['close', 'refresh']);
+const emit = defineEmits(['close', 'refresh', 'updatePic']);
 
 const form = ref({
     bio: props.profile?.bio || '',
@@ -25,6 +26,15 @@ const certForm = ref({ title: '', issued_by: '', file: null });
 const showCertForm = ref(false);
 const saved = ref(false);
 const processing = ref(false);
+const toastShow = ref(false);
+const toastMessage = ref('');
+const toastType = ref('success');
+
+const showToast = (message, type = 'success') => {
+    toastMessage.value = message;
+    toastType.value = type;
+    toastShow.value = true;
+};
 
 watch(() => props.profile, (newProfile) => {
     if (newProfile) {
@@ -41,12 +51,12 @@ const submit = async () => {
     errors.value = {};
     try {
         await axios.put('/teacher/profile', form.value);
-        saved.value = true;
+        showToast('Profile saved successfully!');
         emit('refresh');
-        setTimeout(() => saved.value = false, 2000);
     } catch (e) {
         if (e.response?.data?.errors) {
             errors.value = e.response.data.errors;
+            showToast('Failed to save profile.', 'error');
         }
     } finally {
         processing.value = false;
@@ -59,7 +69,11 @@ const handlePicture = (e) => {
         const formData = new FormData();
         formData.append('profile_pic', file);
         router.post('/teacher/profile/picture', formData, {
-            onFinish: () => emit('refresh'),
+            onFinish: () => {
+                showToast('Profile picture uploaded!');
+                emit('refresh');
+                emit('updatePic');
+            },
         });
     }
 };
@@ -79,10 +93,12 @@ const submitCert = async () => {
         });
         showCertForm.value = false;
         certForm.value = { title: '', issued_by: '', file: null };
+        showToast('Certificate uploaded successfully!');
         emit('refresh');
     } catch (e) {
         if (e.response?.data?.errors) {
             errors.value = e.response.data.errors;
+            showToast('Failed to upload certificate.', 'error');
         }
     }
 };
@@ -91,9 +107,10 @@ const deleteCert = async (cert) => {
     if (confirm('Delete this certificate?')) {
         try {
             await axios.delete(`/teacher/profile/certificates/${cert.id}`);
+            showToast('Certificate deleted.');
             emit('refresh');
         } catch (e) {
-            console.error('Failed to delete certificate');
+            showToast('Failed to delete certificate.', 'error');
         }
     }
 };
@@ -164,7 +181,6 @@ const deleteCert = async (cert) => {
                     <button type="submit" :disabled="processing" class="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 disabled:opacity-50">
                         Save Profile
                     </button>
-                    <span v-if="saved" class="text-sm text-green-600 font-medium">Saved!</span>
                 </div>
             </form>
 
@@ -218,4 +234,5 @@ const deleteCert = async (cert) => {
             </div>
         </div>
     </Modal>
+    <Toast :show="toastShow" :message="toastMessage" :type="toastType" @close="toastShow = false" />
 </template>

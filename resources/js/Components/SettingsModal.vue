@@ -1,6 +1,7 @@
 <script setup>
 import Modal from '@/Components/Modal.vue';
 import InputError from '@/Components/InputError.vue';
+import Toast from '@/Components/Toast.vue';
 import { usePage } from '@inertiajs/vue3';
 import { ref, computed } from 'vue';
 import axios from 'axios';
@@ -27,21 +28,28 @@ const passwordForm = ref({
 
 const profileErrors = ref({});
 const passwordErrors = ref({});
-const profileSaved = ref(false);
-const passwordSaved = ref(false);
 const profileProcessing = ref(false);
 const passwordProcessing = ref(false);
+const toastShow = ref(false);
+const toastMessage = ref('');
+const toastType = ref('success');
+
+const showToast = (message, type = 'success') => {
+    toastMessage.value = message;
+    toastType.value = type;
+    toastShow.value = true;
+};
 
 const submitProfile = async () => {
     profileProcessing.value = true;
     profileErrors.value = {};
     try {
         await axios.patch('/profile', profileForm.value);
-        profileSaved.value = true;
-        setTimeout(() => profileSaved.value = false, 2000);
+        showToast('Profile updated successfully!');
     } catch (e) {
         if (e.response?.data?.errors) {
             profileErrors.value = e.response.data.errors;
+            showToast('Failed to update profile.', 'error');
         }
     } finally {
         profileProcessing.value = false;
@@ -54,11 +62,11 @@ const submitPassword = async () => {
     try {
         await axios.put('/password', passwordForm.value);
         passwordForm.value = { current_password: '', password: '', password_confirmation: '' };
-        passwordSaved.value = true;
-        setTimeout(() => passwordSaved.value = false, 2000);
+        showToast('Password updated successfully!');
     } catch (e) {
         if (e.response?.data?.errors) {
             passwordErrors.value = e.response.data.errors;
+            showToast('Failed to update password.', 'error');
         }
     } finally {
         passwordProcessing.value = false;
@@ -102,7 +110,6 @@ const submitPassword = async () => {
                         <button type="submit" :disabled="profileProcessing" class="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 disabled:opacity-50">
                             Save Changes
                         </button>
-                        <span v-if="profileSaved" class="text-sm text-green-600 font-medium">Saved!</span>
                     </div>
                 </form>
             </div>
@@ -150,10 +157,10 @@ const submitPassword = async () => {
                         <button type="submit" :disabled="passwordProcessing" class="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 disabled:opacity-50">
                             Update Password
                         </button>
-                        <span v-if="passwordSaved" class="text-sm text-green-600 font-medium">Updated!</span>
                     </div>
                 </form>
             </div>
         </div>
     </Modal>
+    <Toast :show="toastShow" :message="toastMessage" :type="toastType" @close="toastShow = false" />
 </template>

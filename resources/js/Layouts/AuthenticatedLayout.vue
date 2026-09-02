@@ -18,15 +18,6 @@ const showProfileModal = ref(false);
 const showSettingsModal = ref(false);
 const teacherProfile = ref(null);
 const profilePic = ref(null);
-const toastShow = ref(false);
-const toastMessage = ref('');
-const toastType = ref('success');
-
-const showToast = (message, type = 'success') => {
-    toastMessage.value = message;
-    toastType.value = type;
-    toastShow.value = true;
-};
 
 const goTo = (href) => {
     sidebarOpen.value = false;
@@ -263,14 +254,11 @@ onMounted(() => {
             @close="showProfileModal = false"
             @refresh="fetchTeacherProfile"
             @updatePic="updateProfilePic"
-            @toast="(e) => showToast(e.message, e.type)"
         />
         <SettingsModal
             :show="showSettingsModal"
             @close="showSettingsModal = false"
             @updatePic="updateProfilePic"
-            @toast="(e) => showToast(e.message, e.type)"
         />
-        <Toast :show="toastShow" :message="toastMessage" :type="toastType" @close="toastShow = false" />
     </div>
 </template>

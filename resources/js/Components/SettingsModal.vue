@@ -10,7 +10,7 @@ const props = defineProps({
     show: Boolean,
 });
 
-const emit = defineEmits(['close', 'updatePic', 'toast']);
+const emit = defineEmits(['close', 'updatePic']);
 
 const page = usePage();
 const user = computed(() => page.props.auth.user);
@@ -30,9 +30,14 @@ const profileErrors = ref({});
 const passwordErrors = ref({});
 const profileProcessing = ref(false);
 const passwordProcessing = ref(false);
+const toastShow = ref(false);
+const toastMessage = ref('');
+const toastType = ref('success');
 
 const showToast = (message, type = 'success') => {
-    emit('toast', { message, type });
+    toastMessage.value = message;
+    toastType.value = type;
+    toastShow.value = true;
 };
 
 const handlePicture = (e) => {
@@ -195,4 +200,5 @@ const submitPassword = async () => {
             </div>
         </div>
     </Modal>
+    <Toast :show="toastShow" :message="toastMessage" :type="toastType" @close="toastShow = false" />
 </template>

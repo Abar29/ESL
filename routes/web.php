@@ -112,4 +112,19 @@ Route::get('/debug/cloudinary', function () {
     ]);
 })->middleware('auth');
 
+Route::post('/debug/cloudinary/test', function (Request $request) {
+    $request->validate(['file' => 'required|image|mimes:jpg,jpeg,png|max:2048']);
+    $service = app(\App\Services\CloudinaryService::class);
+
+    if (!$service->isConfigured()) {
+        return response()->json(['error' => 'Cloudinary not configured'], 500);
+    }
+
+    $url = $service->upload($request->file('file'), 'test');
+    if ($url) {
+        return response()->json(['success' => true, 'url' => $url]);
+    }
+    return response()->json(['error' => 'Upload failed. Check Render logs.'], 500);
+})->middleware('auth');
+
 require __DIR__.'/auth.php';

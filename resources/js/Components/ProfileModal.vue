@@ -63,18 +63,23 @@ const submit = async () => {
     }
 };
 
-const handlePicture = (e) => {
+const handlePicture = async (e) => {
     const file = e.target.files[0];
     if (file) {
         const formData = new FormData();
         formData.append('profile_pic', file);
-        router.post('/teacher/profile/picture', formData, {
-            onFinish: () => {
+        try {
+            const response = await axios.post('/teacher/profile/picture', formData, {
+                headers: { 'Content-Type': 'multipart/form-data' },
+            });
+            if (response.data.success) {
                 showToast('Profile picture uploaded!');
                 emit('refresh');
                 emit('updatePic');
-            },
-        });
+            }
+        } catch (err) {
+            showToast(err.response?.data?.error || 'Failed to upload picture.', 'error');
+        }
     }
 };
 

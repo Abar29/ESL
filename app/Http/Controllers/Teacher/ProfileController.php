@@ -56,7 +56,7 @@ class ProfileController extends Controller
             $profile->update($validated);
         }
 
-        return back()->with('success', 'Profile updated successfully.');
+        return response()->json(['success' => true, 'message' => 'Profile updated successfully.']);
     }
 
     public function updatePicture(Request $request)
@@ -67,18 +67,23 @@ class ProfileController extends Controller
 
         $user = Auth::user();
         $profile = $user->teacherProfile;
+
+        if (!$profile) {
+            return response()->json(['error' => 'Please complete your profile first.'], 422);
+        }
+
         $cloudinary = app(CloudinaryService::class);
 
         if ($cloudinary->isConfigured()) {
-            if ($profile && $profile->profile_pic && str_starts_with($profile->profile_pic, 'http')) {
+            if ($profile->profile_pic && str_starts_with($profile->profile_pic, 'http')) {
                 $cloudinary->delete($profile->profile_pic);
             }
             $url = $cloudinary->upload($request->file('profile_pic'), 'profile-pics');
             if ($url) {
                 $profile->update(['profile_pic' => $url]);
-                return back()->with('success', 'Profile picture uploaded.');
+                return response()->json(['success' => true, 'profile_pic' => $url, 'message' => 'Profile picture uploaded.']);
             }
-            return back()->withErrors(['profile_pic' => 'Failed to upload.']);
+            return response()->json(['error' => 'Failed to upload to Cloudinary.'], 500);
         }
 
         // Fallback to local
@@ -88,7 +93,7 @@ class ProfileController extends Controller
         $path = $request->file('profile_pic')->store('profile-pics', 'public');
         $profile->update(['profile_pic' => $path]);
 
-        return back()->with('success', 'Profile picture uploaded.');
+        return response()->json(['success' => true, 'profile_pic' => '/storage/' . $path, 'message' => 'Profile picture uploaded.']);
     }
 
     public function storeCertificate(Request $request)
@@ -97,7 +102,7 @@ class ProfileController extends Controller
         $profile = $user->teacherProfile;
 
         if (!$profile) {
-            return back()->withErrors(['file' => 'Please complete your profile first.']);
+            return response()->json(['error' => 'Please complete your profile first.'], 422);
         }
 
         $validated = $request->validate([
@@ -119,9 +124,9 @@ class ProfileController extends Controller
                     'file_path' => $url,
                     'created_at' => now(),
                 ]);
-                return back()->with('success', 'Certificate uploaded.');
+                return response()->json(['success' => true, 'message' => 'Certificate uploaded.']);
             }
-            return back()->withErrors(['file' => 'Failed to upload.']);
+            return response()->json(['error' => 'Failed to upload to Cloudinary.'], 500);
         }
 
         // Fallback to local
@@ -136,7 +141,7 @@ class ProfileController extends Controller
             'created_at' => now(),
         ]);
 
-        return back()->with('success', 'Certificate uploaded.');
+        return response()->json(['success' => true, 'message' => 'Certificate uploaded.']);
     }
 
     public function destroyCertificate(Certificate $certificate)
@@ -156,6 +161,6 @@ class ProfileController extends Controller
 
         $certificate->delete();
 
-        return back()->with('success', 'Certificate deleted.');
+        return response()->json(['success' => true, 'message' => 'Certificate deleted.']);
     }
 }

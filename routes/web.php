@@ -99,32 +99,4 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::post('/bookings/{booking}/cancel', [AdminBookingController::class, 'cancel'])->name('bookings.cancel');
 });
 
-Route::get('/debug/cloudinary', function () {
-    $cloud = config('services.cloudinary.cloud_name');
-    $key = config('services.cloudinary.api_key');
-    $secret = config('services.cloudinary.api_secret');
-    return response()->json([
-        'cloud_name' => $cloud ? substr($cloud, 0, 3) . '***' : 'EMPTY',
-        'api_key' => $key ? substr($key, 0, 4) . '***' : 'EMPTY',
-        'api_secret' => $secret ? 'SET' : 'EMPTY',
-        'configured' => app(\App\Services\CloudinaryService::class)->isConfigured(),
-        'app_env' => config('app.env'),
-    ]);
-})->middleware('auth');
-
-Route::post('/debug/cloudinary/test', function (Request $request) {
-    $request->validate(['file' => 'required|image|mimes:jpg,jpeg,png|max:2048']);
-    $service = app(\App\Services\CloudinaryService::class);
-
-    if (!$service->isConfigured()) {
-        return response()->json(['error' => 'Cloudinary not configured'], 500);
-    }
-
-    $url = $service->upload($request->file('file'), 'test');
-    if ($url) {
-        return response()->json(['success' => true, 'url' => $url]);
-    }
-    return response()->json(['error' => 'Upload failed. Check Render logs.'], 500);
-})->middleware('auth');
-
 require __DIR__.'/auth.php';

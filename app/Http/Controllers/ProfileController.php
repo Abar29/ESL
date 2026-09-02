@@ -47,7 +47,6 @@ class ProfileController extends Controller
         $cloudinary = app(CloudinaryService::class);
 
         if ($cloudinary->isConfigured()) {
-            // Cloudinary upload
             if ($profile && $profile->profile_pic && str_starts_with($profile->profile_pic, 'http')) {
                 $cloudinary->delete($profile->profile_pic);
             }
@@ -61,9 +60,9 @@ class ProfileController extends Controller
                         'profile_pic' => $url,
                     ]);
                 }
-                return back()->with('success', 'Profile picture updated.');
+                return response()->json(['success' => true, 'profile_pic' => $url, 'message' => 'Profile picture updated.']);
             }
-            return back()->withErrors(['profile_pic' => 'Failed to upload to Cloudinary.']);
+            return response()->json(['error' => 'Failed to upload to Cloudinary.'], 500);
         }
 
         // Fallback to local storage
@@ -81,7 +80,7 @@ class ProfileController extends Controller
             ]);
         }
 
-        return back()->with('success', 'Profile picture updated.');
+        return response()->json(['success' => true, 'message' => 'Profile picture updated.']);
     }
 
     public function getPicture(Request $request)

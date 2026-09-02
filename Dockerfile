@@ -1,4 +1,4 @@
-FROM php:8.4-cli
+FROM php:8.4-fpm
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -10,11 +10,12 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     unzip \
     libpq-dev \
-    nodejs \
-    npm
+    nginx \
+    supervisor \
+    && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
-RUN docker-php-ext-install pdo_pgsql mbstring exif pcntl bcmath gd zip
+RUN docker-php-ext-install pdo_pgsql mbstring exif pcntl bcmath gd zip opcache
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -31,16 +32,31 @@ COPY . .
 # Generate autoload
 RUN composer dump-autoload --optimize
 
-# Build frontend with HTTPS asset URL
+# Build frontend
 ENV ASSET_URL=https://esl-1.onrender.com
 RUN npm install && npm run build
+
+# OPcache config
+RUN echo "opcache.enable=1\n\
+opcache.memory_consumption=256\n\
+opcache.interned_strings_buffer=16\n\
+opcache.max_accelerated_files=20000\n\
+opcache.revalidate_freq=0\n\
+opcache.validate_timestamps=0\n\
+opcache.save_comments=1\n\
+opcache.fast_shutdown=1" > /usr/local/etc/php/conf.d/opcache.ini
 
 # Storage permissions
 RUN chmod -R 775 storage bootstrap/cache
 
+# Nginx config
+COPY nginx.conf /etc/nginx/sites-available/default
+
+# Supervisor config
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
 EXPOSE 8000
 
-# Use entrypoint script to run migrations at startup
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 

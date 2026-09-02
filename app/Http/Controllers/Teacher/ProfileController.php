@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Teacher;
 use App\Http\Controllers\Controller;
 use App\Models\Certificate;
 use App\Models\TeacherProfile;
+use App\Services\CloudinaryService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -66,18 +67,28 @@ class ProfileController extends Controller
 
         $user = Auth::user();
         $profile = $user->teacherProfile;
+        $cloudinary = app(CloudinaryService::class);
 
-        if ($request->hasFile('profile_pic')) {
-            // Delete old picture
-            if ($profile->profile_pic) {
-                \Storage::disk('public')->delete($profile->profile_pic);
+        if ($cloudinary->isConfigured()) {
+            if ($profile && $profile->profile_pic && str_starts_with($profile->profile_pic, 'http')) {
+                $cloudinary->delete($profile->profile_pic);
             }
-
-            $path = $request->file('profile_pic')->store('profile-pics', 'public');
-            $profile->update(['profile_pic' => $path]);
+            $url = $cloudinary->upload($request->file('profile_pic'), 'profile-pics');
+            if ($url) {
+                $profile->update(['profile_pic' => $url]);
+                return back()->with('success', 'Profile picture uploaded.');
+            }
+            return back()->withErrors(['profile_pic' => 'Failed to upload.']);
         }
 
-        return back()->with('success', 'Profile picture updated.');
+        // Fallback to local
+        if ($profile->profile_pic && !str_starts_with($profile->profile_pic, 'http')) {
+            \Storage::disk('public')->delete($profile->profile_pic);
+        }
+        $path = $request->file('profile_pic')->store('profile-pics', 'public');
+        $profile->update(['profile_pic' => $path]);
+
+        return back()->with('success', 'Profile picture uploaded.');
     }
 
     public function storeCertificate(Request $request)
@@ -95,6 +106,25 @@ class ProfileController extends Controller
             'file' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120',
         ]);
 
+        $cloudinary = app(CloudinaryService::class);
+
+        if ($cloudinary->isConfigured()) {
+            $url = $cloudinary->upload($request->file('file'), 'certificates');
+            if ($url) {
+                Certificate::create([
+                    'id' => Str::uuid(),
+                    'teacher_id' => $profile->id,
+                    'title' => $validated['title'],
+                    'issued_by' => $validated['issued_by'] ?? null,
+                    'file_path' => $url,
+                    'created_at' => now(),
+                ]);
+                return back()->with('success', 'Certificate uploaded.');
+            }
+            return back()->withErrors(['file' => 'Failed to upload.']);
+        }
+
+        // Fallback to local
         $path = $request->file('file')->store('certificates', 'public');
 
         Certificate::create([
@@ -117,7 +147,13 @@ class ProfileController extends Controller
             abort(403);
         }
 
-        \Storage::disk('public')->delete($certificate->file_path);
+        $cloudinary = app(CloudinaryService::class);
+        if ($cloudinary->isConfigured() && str_starts_with($certificate->file_path, 'http')) {
+            $cloudinary->delete($certificate->file_path);
+        } elseif (!str_starts_with($certificate->file_path, 'http')) {
+            \Storage::disk('public')->delete($certificate->file_path);
+        }
+
         $certificate->delete();
 
         return back()->with('success', 'Certificate deleted.');

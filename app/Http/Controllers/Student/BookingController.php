@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\AvailabilitySlot;
 use App\Models\Booking;
 use App\Notifications\NewBookingNotification;
+use App\Services\CloudinaryService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -56,7 +57,12 @@ class BookingController extends Controller
 
         $screenshotPath = null;
         if ($request->hasFile('screenshot')) {
-            $screenshotPath = $request->file('screenshot')->store('payment-screenshots', 'public');
+            $cloudinary = app(CloudinaryService::class);
+            if ($cloudinary->isConfigured()) {
+                $screenshotPath = $cloudinary->upload($request->file('screenshot'), 'payment-screenshots');
+            } else {
+                $screenshotPath = $request->file('screenshot')->store('payment-screenshots', 'public');
+            }
         }
 
         $booking = Booking::create([

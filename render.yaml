@@ -9,7 +9,3 @@ services:
         value: production
       - key: APP_DEBUG
         value: "true"
-      - key: DB_CONNECTION
-        value: sqlite
-      - key: DB_DATABASE
-        value: /tmp/database.sqlite

@@ -4,12 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\TeacherProfile;
+use App\Services\CloudinaryService;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -44,17 +44,40 @@ class ProfileController extends Controller
 
         $user = $request->user();
         $profile = $user->teacherProfile;
+        $cloudinary = app(CloudinaryService::class);
 
+        if ($cloudinary->isConfigured()) {
+            // Cloudinary upload
+            if ($profile && $profile->profile_pic && str_starts_with($profile->profile_pic, 'http')) {
+                $cloudinary->delete($profile->profile_pic);
+            }
+            $url = $cloudinary->upload($request->file('profile_pic'), 'profile-pics');
+            if ($url) {
+                if ($profile) {
+                    $profile->update(['profile_pic' => $url]);
+                } else {
+                    TeacherProfile::create([
+                        'user_id' => $user->id,
+                        'profile_pic' => $url,
+                    ]);
+                }
+                return back()->with('success', 'Profile picture updated.');
+            }
+            return back()->withErrors(['profile_pic' => 'Failed to upload to Cloudinary.']);
+        }
+
+        // Fallback to local storage
         if ($profile) {
-            if ($profile->profile_pic) {
-                Storage::disk('public')->delete($profile->profile_pic);
+            if ($profile->profile_pic && !str_starts_with($profile->profile_pic, 'http')) {
+                \Storage::disk('public')->delete($profile->profile_pic);
             }
             $path = $request->file('profile_pic')->store('profile-pics', 'public');
             $profile->update(['profile_pic' => $path]);
         } else {
-            $profile = TeacherProfile::create([
+            $path = $request->file('profile_pic')->store('profile-pics', 'public');
+            TeacherProfile::create([
                 'user_id' => $user->id,
-                'profile_pic' => $request->file('profile_pic')->store('profile-pics', 'public'),
+                'profile_pic' => $path,
             ]);
         }
 

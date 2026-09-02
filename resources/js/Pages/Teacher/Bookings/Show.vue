@@ -106,7 +106,7 @@ const complete = () => {
                     <!-- Payment Screenshot -->
                     <div v-if="booking.screenshot_path">
                         <p class="text-sm text-gray-500 mb-2">Payment Screenshot</p>
-                        <img :src="'/storage/' + booking.screenshot_path" class="max-w-full h-auto rounded-lg border" />
+                        <img :src="booking.screenshot_path?.startsWith('http') ? booking.screenshot_path : '/storage/' + booking.screenshot_path" class="max-w-full h-auto rounded-lg border" />
                     </div>
 
                     <!-- Action Buttons -->

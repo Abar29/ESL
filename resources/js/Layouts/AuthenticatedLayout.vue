@@ -105,6 +105,11 @@ const isActive = (href) => {
     return currentPath.value === href || currentPath.value.startsWith(href + '/');
 };
 
+const imageUrl = (path) => {
+    if (!path) return '';
+    return path.startsWith('http') ? path : '/storage/' + path;
+};
+
 onMounted(() => {
     if (userRole.value === 'teacher') {
         fetchTeacherProfile();
@@ -164,7 +169,7 @@ onMounted(() => {
                 <div class="border-t border-gray-100 px-3 py-4">
                     <div class="flex items-center gap-3 px-3 py-2">
                         <div class="w-9 h-9 bg-indigo-100 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden">
-                            <img v-if="profilePic" :src="'/storage/' + profilePic" class="w-9 h-9 rounded-full object-cover" />
+                            <img v-if="profilePic" :src="imageUrl(profilePic)" class="w-9 h-9 rounded-full object-cover" />
                             <span v-else class="text-sm font-semibold text-indigo-700">{{ user?.name?.charAt(0)?.toUpperCase() }}</span>
                         </div>
                         <div class="flex-1 min-w-0">
@@ -225,7 +230,7 @@ onMounted(() => {
                             <template #trigger>
                                 <button class="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100">
                                     <div class="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center overflow-hidden">
-                                        <img v-if="profilePic" :src="'/storage/' + profilePic" class="w-8 h-8 rounded-full object-cover" />
+                                        <img v-if="profilePic" :src="imageUrl(profilePic)" class="w-8 h-8 rounded-full object-cover" />
                                         <span v-else class="text-sm font-semibold text-indigo-700">{{ user?.name?.charAt(0)?.toUpperCase() }}</span>
                                     </div>
                                     <span class="hidden sm:block text-sm font-medium text-gray-700">{{ user?.name }}</span>

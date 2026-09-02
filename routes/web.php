@@ -99,4 +99,17 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::post('/bookings/{booking}/cancel', [AdminBookingController::class, 'cancel'])->name('bookings.cancel');
 });
 
+Route::get('/debug/cloudinary', function () {
+    $cloud = config('services.cloudinary.cloud_name');
+    $key = config('services.cloudinary.api_key');
+    $secret = config('services.cloudinary.api_secret');
+    return response()->json([
+        'cloud_name' => $cloud ? substr($cloud, 0, 3) . '***' : 'EMPTY',
+        'api_key' => $key ? substr($key, 0, 4) . '***' : 'EMPTY',
+        'api_secret' => $secret ? 'SET' : 'EMPTY',
+        'configured' => app(\App\Services\CloudinaryService::class)->isConfigured(),
+        'app_env' => config('app.env'),
+    ]);
+})->middleware('auth');
+
 require __DIR__.'/auth.php';

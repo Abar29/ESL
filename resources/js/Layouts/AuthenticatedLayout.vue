@@ -46,8 +46,23 @@ const fetchTeacherProfile = async () => {
     }
 };
 
+const fetchProfilePic = async () => {
+    try {
+        const response = await axios.get('/profile/pic');
+        if (response.data.profile_pic) {
+            profilePic.value = response.data.profile_pic;
+        }
+    } catch (e) {
+        // ignore
+    }
+};
+
 const updateProfilePic = () => {
-    fetchTeacherProfile();
+    if (userRole.value === 'teacher') {
+        fetchTeacherProfile();
+    } else {
+        fetchProfilePic();
+    }
 };
 
 const openSettingsModal = () => {
@@ -93,6 +108,8 @@ const isActive = (href) => {
 onMounted(() => {
     if (userRole.value === 'teacher') {
         fetchTeacherProfile();
+    } else {
+        fetchProfilePic();
     }
 });
 </script>
@@ -241,6 +258,7 @@ onMounted(() => {
         <SettingsModal
             :show="showSettingsModal"
             @close="showSettingsModal = false"
+            @updatePic="updateProfilePic"
         />
     </div>
 </template>

@@ -40,6 +40,8 @@ Route::get('/dashboard', function () {
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/profile/picture', [ProfileController::class, 'updatePicture'])->name('profile.picture');
+    Route::get('/profile/pic', [ProfileController::class, 'getPicture'])->name('profile.pic');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 

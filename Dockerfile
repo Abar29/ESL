@@ -29,14 +29,17 @@ RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist
 # Copy application files
 COPY . .
 
-# Create SQLite database and run migrations
+# Create SQLite database
 RUN touch /tmp/database.sqlite
 
 # Generate autoload
 RUN composer dump-autoload --optimize
 
-# Build frontend
-RUN npm install && npm run build
+# Build frontend with correct asset URL
+ARG APP_URL=https://esl-1.onrender.com
+ENV APP_URL=${APP_URL}
+ENV ASSET_URL=${APP_URL}
+RUN npm install && ASSET_URL=${APP_URL} npm run build
 
 # Storage permissions
 RUN chmod -R 775 storage bootstrap/cache

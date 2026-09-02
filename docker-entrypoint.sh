@@ -10,9 +10,6 @@ php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 
-# Optimize
-php artisan icons:cache
-
 # Run database migrations
 php artisan migrate --force
 

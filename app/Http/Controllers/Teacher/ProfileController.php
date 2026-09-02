@@ -25,7 +25,7 @@ class ProfileController extends Controller
     public function data()
     {
         $user = Auth::user();
-        $profile = $user->teacherProfile;
+        $profile = $user->teacherProfile ? $user->teacherProfile->load('certificates') : null;
 
         return response()->json([
             'profile' => $profile,
@@ -82,14 +82,18 @@ class ProfileController extends Controller
 
     public function storeCertificate(Request $request)
     {
+        $user = Auth::user();
+        $profile = $user->teacherProfile;
+
+        if (!$profile) {
+            return back()->withErrors(['file' => 'Please complete your profile first.']);
+        }
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'issued_by' => 'nullable|string|max:255',
             'file' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120',
         ]);
-
-        $user = Auth::user();
-        $profile = $user->teacherProfile;
 
         $path = $request->file('file')->store('certificates', 'public');
 

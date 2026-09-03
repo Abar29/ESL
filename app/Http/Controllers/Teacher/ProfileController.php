@@ -74,6 +74,7 @@ class ProfileController extends Controller
 
         $cloudinary = app(CloudinaryService::class);
 
+        // Try Cloudinary first
         if ($cloudinary->isConfigured()) {
             try {
                 if ($profile->profile_pic && str_starts_with($profile->profile_pic, 'http')) {
@@ -84,21 +85,17 @@ class ProfileController extends Controller
                     $profile->update(['profile_pic' => $url]);
                     return response()->json(['success' => true, 'profile_pic' => $url, 'message' => 'Profile picture uploaded.']);
                 }
-                return response()->json(['error' => 'Cloudinary upload returned null. Check logs.'], 500);
             } catch (\Exception $e) {
                 \Log::error('Cloudinary upload exception', ['error' => $e->getMessage()]);
-                return response()->json(['error' => 'Upload failed: ' . $e->getMessage()], 500);
             }
         }
 
-        // Fallback to local
-        if ($profile->profile_pic && !str_starts_with($profile->profile_pic, 'http')) {
-            \Storage::disk('public')->delete($profile->profile_pic);
-        }
-        $path = $request->file('profile_pic')->store('profile-pics', 'public');
-        $profile->update(['profile_pic' => $path]);
+        // Fallback: store as base64 data URI in database (always works)
+        $file = $request->file('profile_pic');
+        $base64 = 'data:' . $file->getMimeType() . ';base64,' . base64_encode(file_get_contents($file->getRealPath()));
+        $profile->update(['profile_pic' => $base64]);
 
-        return response()->json(['success' => true, 'profile_pic' => '/storage/' . $path, 'message' => 'Profile picture uploaded.']);
+        return response()->json(['success' => true, 'profile_pic' => $base64, 'message' => 'Profile picture uploaded.']);
     }
 
     public function storeCertificate(Request $request)

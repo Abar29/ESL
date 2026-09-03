@@ -46,41 +46,43 @@ class ProfileController extends Controller
         $profile = $user->teacherProfile;
         $cloudinary = app(CloudinaryService::class);
 
+        // Try Cloudinary first
         if ($cloudinary->isConfigured()) {
-            if ($profile && $profile->profile_pic && str_starts_with($profile->profile_pic, 'http')) {
-                $cloudinary->delete($profile->profile_pic);
-            }
-            $url = $cloudinary->upload($request->file('profile_pic'), 'profile-pics');
-            if ($url) {
-                if ($profile) {
-                    $profile->update(['profile_pic' => $url]);
-                } else {
-                    TeacherProfile::create([
-                        'user_id' => $user->id,
-                        'profile_pic' => $url,
-                    ]);
+            try {
+                if ($profile && $profile->profile_pic && str_starts_with($profile->profile_pic, 'http')) {
+                    $cloudinary->delete($profile->profile_pic);
                 }
-                return response()->json(['success' => true, 'profile_pic' => $url, 'message' => 'Profile picture updated.']);
+                $url = $cloudinary->upload($request->file('profile_pic'), 'profile-pics');
+                if ($url) {
+                    if ($profile) {
+                        $profile->update(['profile_pic' => $url]);
+                    } else {
+                        TeacherProfile::create([
+                            'user_id' => $user->id,
+                            'profile_pic' => $url,
+                        ]);
+                    }
+                    return response()->json(['success' => true, 'profile_pic' => $url, 'message' => 'Profile picture updated.']);
+                }
+            } catch (\Exception $e) {
+                \Log::error('Cloudinary upload exception', ['error' => $e->getMessage()]);
             }
-            return response()->json(['error' => 'Failed to upload to Cloudinary.'], 500);
         }
 
-        // Fallback to local storage
+        // Fallback: store as base64 data URI in database (always works)
+        $file = $request->file('profile_pic');
+        $base64 = 'data:' . $file->getMimeType() . ';base64,' . base64_encode(file_get_contents($file->getRealPath()));
+
         if ($profile) {
-            if ($profile->profile_pic && !str_starts_with($profile->profile_pic, 'http')) {
-                \Storage::disk('public')->delete($profile->profile_pic);
-            }
-            $path = $request->file('profile_pic')->store('profile-pics', 'public');
-            $profile->update(['profile_pic' => $path]);
+            $profile->update(['profile_pic' => $base64]);
         } else {
-            $path = $request->file('profile_pic')->store('profile-pics', 'public');
             TeacherProfile::create([
                 'user_id' => $user->id,
-                'profile_pic' => $path,
+                'profile_pic' => $base64,
             ]);
         }
 
-        return response()->json(['success' => true, 'message' => 'Profile picture updated.']);
+        return response()->json(['success' => true, 'profile_pic' => $base64, 'message' => 'Profile picture updated.']);
     }
 
     public function getPicture(Request $request)

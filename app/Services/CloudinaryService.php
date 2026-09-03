@@ -37,34 +37,36 @@ class CloudinaryService
         ];
         $signature = $this->generateSignature($params);
 
-        $url = "https://api.cloudinary.com/v1_1/{$this->cloudName}/image/upload";
+        $fileContent = file_get_contents($file->getRealPath());
+        $base64 = 'data:' . $file->getMimeType() . ';base64,' . base64_encode($fileContent);
 
-        $postData = [
-            'file' => new \CURLFile(
-                $file->getRealPath(),
-                $file->getMimeType(),
-                $file->getClientOriginalName()
-            ),
+        $postData = http_build_query([
+            'file' => $base64,
             'api_key' => $this->apiKey,
             'timestamp' => $timestamp,
             'folder' => $folder,
             'signature' => $signature,
-        ];
+        ]);
+
+        $url = "https://api.cloudinary.com/v1_1/{$this->cloudName}/image/upload";
 
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+        curl_setopt_array($ch, [
+            CURLOPT_URL => $url,
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => $postData,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_SSL_VERIFYPEER => true,
+            CURLOPT_TIMEOUT => 60,
+        ]);
         $response = curl_exec($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $error = curl_error($ch);
+        $errno = curl_errno($ch);
         curl_close($ch);
 
-        if ($error) {
-            Log::error('Cloudinary cURL error', ['error' => $error]);
+        if ($errno) {
+            Log::error('Cloudinary cURL error', ['error' => $error, 'errno' => $errno]);
             return null;
         }
 
@@ -100,19 +102,21 @@ class CloudinaryService
         ];
         $signature = $this->generateSignature($params);
 
-        $postData = [
+        $postData = http_build_query([
             'public_id' => $publicId,
             'timestamp' => $timestamp,
             'api_key' => $this->apiKey,
             'signature' => $signature,
-        ];
+        ]);
 
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, "https://api.cloudinary.com/v1_1/{$this->cloudName}/image/destroy");
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+        curl_setopt_array($ch, [
+            CURLOPT_URL => "https://api.cloudinary.com/v1_1/{$this->cloudName}/image/destroy",
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => $postData,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT => 30,
+        ]);
         $response = curl_exec($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);

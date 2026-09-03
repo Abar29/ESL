@@ -59,9 +59,16 @@ class BookingController extends Controller
         if ($request->hasFile('screenshot')) {
             $cloudinary = app(CloudinaryService::class);
             if ($cloudinary->isConfigured()) {
-                $screenshotPath = $cloudinary->upload($request->file('screenshot'), 'payment-screenshots');
-            } else {
-                $screenshotPath = $request->file('screenshot')->store('payment-screenshots', 'public');
+                try {
+                    $screenshotPath = $cloudinary->upload($request->file('screenshot'), 'payment-screenshots');
+                } catch (\Exception $e) {
+                    \Log::error('Cloudinary screenshot upload failed', ['error' => $e->getMessage()]);
+                }
+            }
+            // Fallback: store as base64 data URI
+            if (!$screenshotPath) {
+                $file = $request->file('screenshot');
+                $screenshotPath = 'data:' . $file->getMimeType() . ';base64,' . base64_encode(file_get_contents($file->getRealPath()));
             }
         }
 

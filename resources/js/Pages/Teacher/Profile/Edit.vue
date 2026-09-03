@@ -65,7 +65,7 @@ const deleteCert = (cert) => {
                 </div>
                 <div class="p-6 flex items-center gap-6">
                     <div class="w-20 h-20 rounded-full bg-indigo-100 flex items-center justify-center flex-shrink-0 overflow-hidden">
-                        <img v-if="profile?.profile_pic" :src="profile.profile_pic.startsWith('http') ? profile.profile_pic : '/storage/' + profile.profile_pic" class="w-20 h-20 rounded-full object-cover" />
+                        <img v-if="profile?.profile_pic" :src="profile.profile_pic.startsWith('http') || profile.profile_pic.startsWith('data:') ? profile.profile_pic : '/storage/' + profile.profile_pic" class="w-20 h-20 rounded-full object-cover" />
                         <span v-else class="text-2xl font-bold text-indigo-600">{{ $page.props.auth.user?.name?.charAt(0)?.toUpperCase() }}</span>
                     </div>
                     <div>

@@ -107,7 +107,8 @@ const isActive = (href) => {
 
 const imageUrl = (path) => {
     if (!path) return '';
-    return path.startsWith('http') ? path : '/storage/' + path;
+    if (path.startsWith('http') || path.startsWith('data:')) return path;
+    return '/storage/' + path;
 };
 
 onMounted(() => {

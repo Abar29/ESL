@@ -28,7 +28,7 @@ const props = defineProps({
                     <div class="p-5">
                         <div class="flex items-center gap-4">
                             <div class="w-14 h-14 rounded-full bg-indigo-100 flex items-center justify-center flex-shrink-0 overflow-hidden">
-                                <img v-if="teacher.profile_pic" :src="teacher.profile_pic.startsWith('http') ? teacher.profile_pic : '/storage/' + teacher.profile_pic" class="w-14 h-14 rounded-full object-cover" />
+                                <img v-if="teacher.profile_pic" :src="teacher.profile_pic.startsWith('http') || teacher.profile_pic.startsWith('data:') ? teacher.profile_pic : '/storage/' + teacher.profile_pic" class="w-14 h-14 rounded-full object-cover" />
                                 <span v-else class="text-xl font-bold text-indigo-600">{{ teacher.user?.name?.charAt(0)?.toUpperCase() }}</span>
                             </div>
                             <div class="min-w-0">

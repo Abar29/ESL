@@ -84,7 +84,7 @@ const submit = () => {
                     <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
                         <div class="p-6 text-center">
                             <div class="w-20 h-20 rounded-full bg-indigo-100 flex items-center justify-center mx-auto mb-4 overflow-hidden">
-                                <img v-if="teacher.profile_pic" :src="teacher.profile_pic.startsWith('http') ? teacher.profile_pic : '/storage/' + teacher.profile_pic" class="w-20 h-20 rounded-full object-cover" />
+                                <img v-if="teacher.profile_pic" :src="teacher.profile_pic.startsWith('http') || teacher.profile_pic.startsWith('data:') ? teacher.profile_pic : '/storage/' + teacher.profile_pic" class="w-20 h-20 rounded-full object-cover" />
                                 <span v-else class="text-3xl font-bold text-indigo-600">{{ teacher.user?.name?.charAt(0)?.toUpperCase() }}</span>
                             </div>
                             <h3 class="text-lg font-semibold text-gray-900">{{ teacher.user?.name }}</h3>

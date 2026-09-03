@@ -79,7 +79,7 @@ const cancelBooking = () => {
                     <!-- Payment Screenshot -->
                     <div v-if="booking.screenshot_path" class="mt-6">
                         <h4 class="text-sm font-medium text-gray-700 mb-2">Payment Screenshot</h4>
-                        <img :src="booking.screenshot_path?.startsWith('http') ? booking.screenshot_path : '/storage/' + booking.screenshot_path" class="max-w-sm rounded-lg border" />
+                        <img :src="booking.screenshot_path?.startsWith('http') || booking.screenshot_path?.startsWith('data:') ? booking.screenshot_path : '/storage/' + booking.screenshot_path" class="max-w-sm rounded-lg border" />
                     </div>
 
                     <!-- Review -->

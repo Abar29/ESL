@@ -131,7 +131,7 @@ const deleteCert = async (cert) => {
                 <h4 class="text-sm font-semibold text-gray-900 mb-3">Profile Picture</h4>
                 <div class="flex items-center gap-4">
                     <div class="w-16 h-16 rounded-full bg-indigo-100 flex items-center justify-center flex-shrink-0 overflow-hidden">
-                        <img v-if="profile?.profile_pic" :src="profile.profile_pic.startsWith('http') ? profile.profile_pic : '/storage/' + profile.profile_pic" class="w-16 h-16 rounded-full object-cover" />
+                        <img v-if="profile?.profile_pic" :src="profile.profile_pic.startsWith('http') || profile.profile_pic.startsWith('data:') ? profile.profile_pic : '/storage/' + profile.profile_pic" class="w-16 h-16 rounded-full object-cover" />
                         <span v-else class="text-xl font-bold text-indigo-600">{{ $page.props.auth.user?.name?.charAt(0)?.toUpperCase() }}</span>
                     </div>
                     <div>

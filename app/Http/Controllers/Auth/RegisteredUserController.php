@@ -30,6 +30,7 @@ class RegisteredUserController extends Controller
             'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'role' => 'required|in:student,teacher',
+            'address' => 'nullable|string|max:500',
         ]);
 
         $user = User::create([
@@ -38,6 +39,7 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => $request->role,
+            'address' => $request->address,
             'email_verified_at' => now(),
         ]);
 

@@ -17,6 +17,7 @@ const form = useForm({
     email: props.user.email,
     role: props.user.role,
     phone: props.user.phone || '',
+    address: props.user.address || '',
     status: props.user.status,
 });
 
@@ -78,6 +79,12 @@ const submit = () => {
                             <InputLabel for="phone" value="Phone (optional)" />
                             <TextInput id="phone" v-model="form.phone" class="mt-1 block w-full" />
                             <InputError :message="form.errors.phone" class="mt-2" />
+                        </div>
+
+                        <div>
+                            <InputLabel for="address" value="Address (optional)" />
+                            <TextInput id="address" v-model="form.address" class="mt-1 block w-full" placeholder="City, Province" />
+                            <InputError :message="form.errors.address" class="mt-2" />
                         </div>
 
                         <div>

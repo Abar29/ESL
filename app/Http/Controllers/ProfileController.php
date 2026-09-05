@@ -46,43 +46,37 @@ class ProfileController extends Controller
         $profile = $user->teacherProfile;
         $cloudinary = app(CloudinaryService::class);
 
-        // Try Cloudinary first
+        // Upload to Cloudinary or base64
+        $uploadedUrl = null;
+
         if ($cloudinary->isConfigured()) {
             try {
                 if ($profile && $profile->profile_pic && str_starts_with($profile->profile_pic, 'http')) {
                     $cloudinary->delete($profile->profile_pic);
                 }
-                $url = $cloudinary->upload($request->file('profile_pic'), 'profile-pics');
-                if ($url) {
-                    if ($profile) {
-                        $profile->update(['profile_pic' => $url]);
-                    } else {
-                        TeacherProfile::create([
-                            'user_id' => $user->id,
-                            'profile_pic' => $url,
-                        ]);
-                    }
-                    return response()->json(['success' => true, 'profile_pic' => $url, 'message' => 'Profile picture updated.']);
+                if ($user->profile_pic && str_starts_with($user->profile_pic, 'http')) {
+                    $cloudinary->delete($user->profile_pic);
                 }
+                $uploadedUrl = $cloudinary->upload($request->file('profile_pic'), 'profile-pics');
             } catch (\Exception $e) {
                 \Log::error('Cloudinary upload exception', ['error' => $e->getMessage()]);
             }
         }
 
-        // Fallback: store as base64 data URI in database (always works)
-        $file = $request->file('profile_pic');
-        $base64 = 'data:' . $file->getMimeType() . ';base64,' . base64_encode(file_get_contents($file->getRealPath()));
-
-        if ($profile) {
-            $profile->update(['profile_pic' => $base64]);
-        } else {
-            TeacherProfile::create([
-                'user_id' => $user->id,
-                'profile_pic' => $base64,
-            ]);
+        if (!$uploadedUrl) {
+            $file = $request->file('profile_pic');
+            $uploadedUrl = 'data:' . $file->getMimeType() . ';base64,' . base64_encode(file_get_contents($file->getRealPath()));
         }
 
-        return response()->json(['success' => true, 'profile_pic' => $base64, 'message' => 'Profile picture updated.']);
+        // Teachers: save to teacher_profiles
+        if ($profile) {
+            $profile->update(['profile_pic' => $uploadedUrl]);
+        } else {
+            // Students & admin: save to users table
+            $user->update(['profile_pic' => $uploadedUrl]);
+        }
+
+        return response()->json(['success' => true, 'profile_pic' => $uploadedUrl, 'message' => 'Profile picture updated.']);
     }
 
     public function getPicture(Request $request)
@@ -91,7 +85,7 @@ class ProfileController extends Controller
         $profile = $user->teacherProfile;
 
         return response()->json([
-            'profile_pic' => $profile?->profile_pic,
+            'profile_pic' => $profile?->profile_pic ?? $user->profile_pic,
         ]);
     }
 

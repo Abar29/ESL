@@ -37,6 +37,7 @@ class UserController extends Controller
             'password' => 'required|string|min:6',
             'role' => 'required|in:student,teacher,admin',
             'phone' => 'nullable|string|max:20',
+            'address' => 'nullable|string|max:500',
         ]);
 
         $user = User::create([
@@ -71,6 +72,7 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email,' . $user->id,
             'role' => 'required|in:student,teacher,admin',
             'phone' => 'nullable|string|max:20',
+            'address' => 'nullable|string|max:500',
             'status' => 'required|in:active,suspended',
         ]);
 

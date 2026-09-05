@@ -14,6 +14,7 @@ const form = useForm({
     password: '',
     role: 'student',
     phone: '',
+    address: '',
 });
 
 const toastShow = ref(false);
@@ -80,6 +81,12 @@ const submit = () => {
                             <InputLabel for="phone" value="Phone (optional)" />
                             <TextInput id="phone" v-model="form.phone" class="mt-1 block w-full" />
                             <InputError :message="form.errors.phone" class="mt-2" />
+                        </div>
+
+                        <div>
+                            <InputLabel for="address" value="Address (optional)" />
+                            <TextInput id="address" v-model="form.address" class="mt-1 block w-full" placeholder="City, Province" />
+                            <InputError :message="form.errors.address" class="mt-2" />
                         </div>
 
                         <div class="flex items-center gap-4">

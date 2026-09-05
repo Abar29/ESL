@@ -11,6 +11,7 @@ const form = useForm({
     password: '',
     password_confirmation: '',
     role: 'student',
+    address: '',
 });
 
 const submit = () => {
@@ -157,6 +158,12 @@ const submit = () => {
                             <InputLabel for="email" value="Email address" class="text-sm font-medium text-gray-700" />
                             <TextInput id="email" v-model="form.email" type="email" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:ring-indigo-500 focus:border-indigo-500" required placeholder="you@example.com" />
                             <InputError class="mt-2" :message="form.errors.email" />
+                        </div>
+
+                        <div>
+                            <InputLabel for="address" value="Address (optional)" class="text-sm font-medium text-gray-700" />
+                            <TextInput id="address" v-model="form.address" type="text" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:ring-indigo-500 focus:border-indigo-500" placeholder="City, Province" />
+                            <InputError class="mt-2" :message="form.errors.address" />
                         </div>
 
                         <div>

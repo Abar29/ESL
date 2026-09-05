@@ -39,8 +39,11 @@ class ProfileController extends Controller
         $validated = $request->validate([
             'bio' => 'nullable|string|max:1000',
             'gcash_number' => 'nullable|string|max:20',
+            'gcash_name' => 'nullable|string|max:255',
             'gotyme_number' => 'nullable|string|max:20',
+            'gotyme_name' => 'nullable|string|max:255',
             'maya_number' => 'nullable|string|max:20',
+            'maya_name' => 'nullable|string|max:255',
             'zoom_link' => 'nullable|url|max:255',
         ]);
 

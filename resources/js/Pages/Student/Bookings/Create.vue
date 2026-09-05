@@ -23,9 +23,9 @@ const submit = () => {
 };
 
 const paymentDetails = {
-    gcash: props.slot.teacher?.gcash_number,
-    gotyme: props.slot.teacher?.gotyme_number,
-    maya: props.slot.teacher?.maya_number,
+    gcash: { number: props.slot.teacher?.gcash_number, name: props.slot.teacher?.gcash_name },
+    gotyme: { number: props.slot.teacher?.gotyme_number, name: props.slot.teacher?.gotyme_name },
+    maya: { number: props.slot.teacher?.maya_number, name: props.slot.teacher?.maya_name },
 };
 </script>
 
@@ -40,6 +40,7 @@ const paymentDetails = {
                 <!-- Slot Info -->
                 <div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
                     <p class="font-medium text-gray-900">{{ slot.teacher?.user?.name }}</p>
+                    <p v-if="slot.teacher?.user?.address" class="text-sm text-gray-500">📍 {{ slot.teacher.user.address }}</p>
                     <p class="text-sm text-gray-500">{{ slot.slot_date ? new Date(slot.slot_date.includes('T') ? slot.slot_date : slot.slot_date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '' }} · {{ slot.start_time }} - {{ slot.end_time }}</p>
                     <p class="mt-2 text-lg font-bold text-indigo-600">₱750.00</p>
                 </div>
@@ -64,7 +65,8 @@ const paymentDetails = {
                     <!-- Payment Details -->
                     <div class="p-4 bg-blue-50 border border-blue-200 rounded-lg">
                         <p class="text-xs font-semibold text-blue-700 uppercase tracking-wider">Send payment to</p>
-                        <p class="mt-1 text-xl font-bold text-blue-900">{{ paymentDetails[form.payment_method] || 'Not available' }}</p>
+                        <p class="mt-1 text-xl font-bold text-blue-900">{{ paymentDetails[form.payment_method]?.number || 'Not available' }}</p>
+                        <p v-if="paymentDetails[form.payment_method]?.name" class="text-sm text-blue-700 mt-1">Account Name: {{ paymentDetails[form.payment_method].name }}</p>
                     </div>
 
                     <!-- Reference Number -->

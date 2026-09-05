@@ -16,8 +16,11 @@ const emit = defineEmits(['close', 'refresh', 'updatePic']);
 const form = ref({
     bio: props.profile?.bio || '',
     gcash_number: props.profile?.gcash_number || '',
+    gcash_name: props.profile?.gcash_name || '',
     gotyme_number: props.profile?.gotyme_number || '',
+    gotyme_name: props.profile?.gotyme_name || '',
     maya_number: props.profile?.maya_number || '',
+    maya_name: props.profile?.maya_name || '',
     zoom_link: props.profile?.zoom_link || '',
 });
 
@@ -40,8 +43,11 @@ watch(() => props.profile, (newProfile) => {
     if (newProfile) {
         form.value.bio = newProfile.bio || '';
         form.value.gcash_number = newProfile.gcash_number || '';
+        form.value.gcash_name = newProfile.gcash_name || '';
         form.value.gotyme_number = newProfile.gotyme_number || '';
+        form.value.gotyme_name = newProfile.gotyme_name || '';
         form.value.maya_number = newProfile.maya_number || '';
+        form.value.maya_name = newProfile.maya_name || '';
         form.value.zoom_link = newProfile.zoom_link || '';
     }
 });
@@ -165,12 +171,24 @@ const deleteCert = async (cert) => {
                             <input id="gcash_number" v-model="form.gcash_number" type="text" class="block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-sm" placeholder="09XX XXX XXXX" />
                         </div>
                         <div>
+                            <label for="gcash_name" class="block text-sm font-medium text-gray-700 mb-1">GCash Account Name</label>
+                            <input id="gcash_name" v-model="form.gcash_name" type="text" class="block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-sm" placeholder="Account holder name" />
+                        </div>
+                        <div>
                             <label for="gotyme_number" class="block text-sm font-medium text-gray-700 mb-1">GoTyme Number</label>
                             <input id="gotyme_number" v-model="form.gotyme_number" type="text" class="block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-sm" placeholder="09XX XXX XXXX" />
                         </div>
                         <div>
+                            <label for="gotyme_name" class="block text-sm font-medium text-gray-700 mb-1">GoTyme Account Name</label>
+                            <input id="gotyme_name" v-model="form.gotyme_name" type="text" class="block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-sm" placeholder="Account holder name" />
+                        </div>
+                        <div>
                             <label for="maya_number" class="block text-sm font-medium text-gray-700 mb-1">Maya Number</label>
                             <input id="maya_number" v-model="form.maya_number" type="text" class="block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-sm" placeholder="09XX XXX XXXX" />
+                        </div>
+                        <div>
+                            <label for="maya_name" class="block text-sm font-medium text-gray-700 mb-1">Maya Account Name</label>
+                            <input id="maya_name" v-model="form.maya_name" type="text" class="block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-sm" placeholder="Account holder name" />
                         </div>
                     </div>
                 </div>

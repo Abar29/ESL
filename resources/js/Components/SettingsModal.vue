@@ -18,6 +18,7 @@ const user = computed(() => page.props.auth.user);
 const profileForm = ref({
     name: user.value?.name || '',
     email: user.value?.email || '',
+    address: user.value?.address || '',
 });
 
 const passwordForm = ref({
@@ -143,6 +144,17 @@ const submitPassword = async () => {
                             required
                         />
                         <InputError class="mt-1" :message="profileErrors.email?.[0]" />
+                    </div>
+                    <div>
+                        <label for="address" class="block text-sm font-medium text-gray-700 mb-1">Address (optional)</label>
+                        <input
+                            id="address"
+                            type="text"
+                            v-model="profileForm.address"
+                            class="block w-full rounded-lg border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-sm"
+                            placeholder="City, Province"
+                        />
+                        <InputError class="mt-1" :message="profileErrors.address?.[0]" />
                     </div>
                     <div class="flex items-center gap-3">
                         <button type="submit" :disabled="profileProcessing" class="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 disabled:opacity-50">

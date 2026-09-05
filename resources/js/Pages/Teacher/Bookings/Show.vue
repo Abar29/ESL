@@ -72,7 +72,10 @@ const complete = () => {
             <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
                 <!-- Header -->
                 <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
-                    <h3 class="text-lg font-semibold text-gray-900">Booking from {{ booking.student?.name }}</h3>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-900">Booking from {{ booking.student?.name }}</h3>
+                        <p v-if="booking.student?.address" class="text-sm text-gray-500">📍 {{ booking.student.address }}</p>
+                    </div>
                     <span :class="[statusColor(booking.status), 'px-3 py-1 text-xs font-medium rounded-full']">
                         {{ booking.status.replace('_', ' ') }}
                     </span>

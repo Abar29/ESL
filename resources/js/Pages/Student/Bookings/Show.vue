@@ -1,28 +1,13 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, router } from '@inertiajs/vue3';
-import { computed, ref, onMounted, onUnmounted } from 'vue';
+import { computed } from 'vue';
 
 const props = defineProps({
     booking: Object,
 });
 
-const canJoin = ref(false);
-let interval = null;
-
-const checkCanJoin = () => {
-    if (props.booking.status !== 'confirmed' || !props.booking.slot) {
-        canJoin.value = false;
-        return;
-    }
-    const dateStr = props.booking.slot.slot_date.includes('T') ? props.booking.slot.slot_date.split('T')[0] : props.booking.slot.slot_date;
-    const sessionStart = new Date(`${dateStr}T${props.booking.slot.start_time}`);
-    const diffMins = (sessionStart - new Date()) / 1000 / 60;
-    canJoin.value = diffMins <= 10 && diffMins >= -60;
-};
-
-onMounted(() => { checkCanJoin(); interval = setInterval(checkCanJoin, 30000); });
-onUnmounted(() => { if (interval) clearInterval(interval); });
+const canJoin = computed(() => props.booking.status === 'confirmed' && props.booking.teacher?.zoom_link);
 
 const statusColor = (status) => {
     const colors = {
@@ -94,19 +79,13 @@ const cancel = () => {
                     </div>
 
                     <!-- Join Meeting -->
-                    <div v-if="booking.status === 'confirmed'">
-                        <div v-if="canJoin" class="p-4 bg-green-50 border border-green-200 rounded-lg">
-                            <p class="text-sm font-medium text-green-900 mb-2">Session is starting soon!</p>
-                            <a :href="booking.teacher?.zoom_link" target="_blank" class="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700">
-                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                                </svg>
-                                Join Meeting
-                            </a>
-                        </div>
-                        <div v-else class="p-4 bg-gray-50 rounded-lg">
-                            <p class="text-sm text-gray-500">Join button will appear 10 minutes before the session starts.</p>
-                        </div>
+                    <div v-if="canJoin" class="p-4 bg-green-50 border border-green-200 rounded-lg">
+                        <a :href="booking.teacher?.zoom_link" target="_blank" class="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                            </svg>
+                            Join Zoom Meeting
+                        </a>
                     </div>
 
                     <!-- Review -->

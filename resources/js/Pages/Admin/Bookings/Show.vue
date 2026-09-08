@@ -79,7 +79,7 @@ const cancelBooking = () => {
                     <!-- Payment Screenshot -->
                     <div v-if="booking.screenshot_path" class="mt-6">
                         <h4 class="text-sm font-medium text-gray-700 mb-2">Payment Screenshot</h4>
-                        <img :src="booking.screenshot_path?.startsWith('http') || booking.screenshot_path?.startsWith('data:') ? booking.screenshot_path : '/storage/' + booking.screenshot_path" class="max-w-sm rounded-lg border" />
+                        <img :src="booking.screenshot_path?.startsWith('http') || booking.screenshot_path?.startsWith('data:') ? booking.screenshot_path : '/storage/' + booking.screenshot_path" class="max-w-sm rounded-lg border" alt="Payment screenshot" />
                     </div>
 
                     <!-- Review -->
@@ -93,7 +93,7 @@ const cancelBooking = () => {
 
                     <!-- Actions -->
                     <div v-if="['pending_payment', 'pending_verification', 'confirmed'].includes(booking.status)" class="mt-6">
-                        <button @click="cancelBooking" class="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700">
+                        <button @click="cancelBooking" class="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                             Cancel Booking (Admin)
                         </button>
                     </div>

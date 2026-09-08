@@ -109,21 +109,21 @@ const complete = () => {
                     <!-- Payment Screenshot -->
                     <div v-if="booking.screenshot_path">
                         <p class="text-sm text-gray-500 mb-2">Payment Screenshot</p>
-                        <img :src="booking.screenshot_path?.startsWith('http') || booking.screenshot_path?.startsWith('data:') ? booking.screenshot_path : '/storage/' + booking.screenshot_path" class="max-w-full h-auto rounded-lg border" />
+                        <img :src="booking.screenshot_path?.startsWith('http') || booking.screenshot_path?.startsWith('data:') ? booking.screenshot_path : '/storage/' + booking.screenshot_path" class="max-w-full h-auto rounded-lg border" alt="Payment screenshot" />
                     </div>
 
                     <!-- Action Buttons -->
                     <div class="pt-4 flex gap-3">
-                        <button v-if="canVerify" @click="accept" class="px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700">
+                        <button v-if="canVerify" @click="accept" class="px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                             Accept Booking
                         </button>
-                        <button v-if="canVerify" @click="decline" class="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700">
+                        <button v-if="canVerify" @click="decline" class="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                             Decline Booking
                         </button>
-                        <button v-if="canComplete" @click="complete" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700">
+                        <button v-if="canComplete" @click="complete" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                             Mark as Completed
                         </button>
-                        <a href="/teacher/bookings" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200">
+                        <a href="/teacher/bookings" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                             Back to Bookings
                         </a>
                     </div>

@@ -16,7 +16,7 @@ const props = defineProps({
         <div>
             <!-- Empty State -->
             <div v-if="!teachers.data || teachers.data.length === 0" class="bg-white rounded-xl border border-gray-200 p-12 text-center">
-                <svg class="w-12 h-12 text-gray-300 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg aria-hidden="true" class="w-12 h-12 text-gray-300 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
                 <p class="text-gray-500 font-medium">No approved teachers available yet.</p>
@@ -28,7 +28,7 @@ const props = defineProps({
                     <div class="p-5">
                         <div class="flex items-center gap-4">
                             <div class="w-14 h-14 rounded-full bg-indigo-100 flex items-center justify-center flex-shrink-0 overflow-hidden">
-                                <img v-if="teacher.profile_pic" :src="teacher.profile_pic.startsWith('http') || teacher.profile_pic.startsWith('data:') ? teacher.profile_pic : '/storage/' + teacher.profile_pic" class="w-14 h-14 rounded-full object-cover" />
+                                <img v-if="teacher.profile_pic" :src="teacher.profile_pic.startsWith('http') || teacher.profile_pic.startsWith('data:') ? teacher.profile_pic : '/storage/' + teacher.profile_pic" class="w-14 h-14 rounded-full object-cover" alt="Teacher profile picture" />
                                 <span v-else class="text-xl font-bold text-indigo-600">{{ teacher.user?.name?.charAt(0)?.toUpperCase() }}</span>
                             </div>
                             <div class="min-w-0">
@@ -44,7 +44,7 @@ const props = defineProps({
                         <p class="mt-3 text-sm text-gray-600 line-clamp-2">{{ teacher.bio || 'No bio available.' }}</p>
                         <a :href="'/student/teachers/' + teacher.id" class="mt-4 inline-flex items-center gap-1 text-sm font-medium text-indigo-600 hover:text-indigo-700">
                             View Profile & Book
-                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg aria-hidden="true" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                             </svg>
                         </a>

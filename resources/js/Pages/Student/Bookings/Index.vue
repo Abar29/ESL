@@ -28,7 +28,7 @@ const statusColor = (status) => {
         <div>
             <!-- Empty State -->
             <div v-if="!bookings.data || bookings.data.length === 0" class="bg-white rounded-xl border border-gray-200 p-12 text-center">
-                <svg class="w-12 h-12 text-gray-300 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg aria-hidden="true" class="w-12 h-12 text-gray-300 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
                 <p class="text-gray-500 font-medium mb-2">No bookings yet</p>
@@ -70,7 +70,7 @@ const statusColor = (status) => {
                         :class="link.active ? 'bg-indigo-600 text-white' : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'"
                         v-html="link.label"
                     ></a>
-                    <span v-else class="px-3 py-2 text-sm rounded-lg text-gray-400" v-html="link.label"></span>
+                    <span v-else class="px-3 py-2 text-sm rounded-lg text-gray-500" v-html="link.label"></span>
                 </template>
             </div>
         </div>

@@ -58,7 +58,7 @@ const props = defineProps({
                                 </div>
                                 <p v-if="booking.review.comment" class="mt-1 text-sm text-gray-600 max-w-xs">{{ booking.review.comment }}</p>
                             </div>
-                            <div v-else class="text-sm text-gray-400">No review</div>
+                            <div v-else class="text-sm text-gray-500">No review</div>
                         </div>
                     </div>
                 </div>

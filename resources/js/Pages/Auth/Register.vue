@@ -31,7 +31,7 @@ const submit = () => {
                 <div>
                     <Link href="/" class="flex items-center gap-3">
                         <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-                            <svg class="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg aria-hidden="true" class="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                             </svg>
                         </div>
@@ -41,23 +41,23 @@ const submit = () => {
 
                 <div>
                     <h1 class="text-4xl font-bold text-white mb-6">Start Your Journey</h1>
-                    <p class="text-indigo-100 text-lg">Join thousands of students and teachers on our platform.</p>
+                    <p class="text-indigo-100 text-lg">Join our learning community of students and teachers.</p>
 
                     <div class="mt-12 space-y-6">
                         <div class="flex items-center gap-4">
                             <div class="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center">
-                                <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <svg aria-hidden="true" class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                                 </svg>
                             </div>
                             <div>
-                                <p class="text-white font-medium">Free to Join</p>
-                                <p class="text-indigo-200 text-sm">No hidden fees or charges</p>
+                                <p class="text-white font-medium">Free Registration</p>
+                                <p class="text-indigo-200 text-sm">Transparent pricing — ₱750 per session</p>
                             </div>
                         </div>
                         <div class="flex items-center gap-4">
                             <div class="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center">
-                                <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <svg aria-hidden="true" class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                                 </svg>
                             </div>
@@ -68,7 +68,7 @@ const submit = () => {
                         </div>
                         <div class="flex items-center gap-4">
                             <div class="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center">
-                                <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <svg aria-hidden="true" class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
                                 </svg>
                             </div>
@@ -80,7 +80,12 @@ const submit = () => {
                     </div>
                 </div>
 
-                <p class="text-indigo-200 text-sm">© 2026 ESL Scheduler. All rights reserved.</p>
+                <p class="text-indigo-200 text-sm">&copy; 2026 Individual ESL. All rights reserved.</p>
+                <div class="mt-2 flex gap-4 text-xs text-indigo-300">
+                    <a href="/privacy-policy" class="hover:text-white">Privacy Policy</a>
+                    <a href="/terms-and-conditions" class="hover:text-white">Terms</a>
+                    <a href="/refund-policy" class="hover:text-white">Refund Policy</a>
+                </div>
             </div>
 
             <!-- Right side - Register form -->
@@ -89,7 +94,7 @@ const submit = () => {
                     <!-- Mobile logo -->
                     <div class="lg:hidden flex items-center gap-3 mb-8">
                         <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center">
-                            <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg aria-hidden="true" class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                             </svg>
                         </div>
@@ -113,7 +118,7 @@ const submit = () => {
                                     <input type="radio" v-model="form.role" value="student" class="sr-only" />
                                     <div class="flex flex-col items-center text-center">
                                         <div class="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center mb-2">
-                                            <svg class="w-6 h-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <svg aria-hidden="true" class="w-6 h-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                                             </svg>
                                         </div>
@@ -121,7 +126,7 @@ const submit = () => {
                                         <span class="text-xs text-gray-500 mt-1">Book ESL sessions</span>
                                     </div>
                                     <div v-if="form.role === 'student'" class="absolute top-2 right-2">
-                                        <svg class="w-5 h-5 text-indigo-600" fill="currentColor" viewBox="0 0 20 20">
+                                        <svg aria-hidden="true" class="w-5 h-5 text-indigo-600" fill="currentColor" viewBox="0 0 20 20">
                                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                                         </svg>
                                     </div>
@@ -131,7 +136,7 @@ const submit = () => {
                                     <input type="radio" v-model="form.role" value="teacher" class="sr-only" />
                                     <div class="flex flex-col items-center text-center">
                                         <div class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center mb-2">
-                                            <svg class="w-6 h-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <svg aria-hidden="true" class="w-6 h-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                                             </svg>
                                         </div>
@@ -139,7 +144,7 @@ const submit = () => {
                                         <span class="text-xs text-gray-500 mt-1">Teach ESL classes</span>
                                     </div>
                                     <div v-if="form.role === 'teacher'" class="absolute top-2 right-2">
-                                        <svg class="w-5 h-5 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
+                                        <svg aria-hidden="true" class="w-5 h-5 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
                                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                                         </svg>
                                     </div>
@@ -182,14 +187,14 @@ const submit = () => {
                             <input id="terms" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded mt-1" required />
                             <label for="terms" class="ml-2 block text-sm text-gray-700">
                                 I agree to the
-                                <a href="#" class="text-indigo-600 hover:text-indigo-500">Terms of Service</a>
+                                <a href="/terms-and-conditions" class="text-indigo-600 hover:text-indigo-500">Terms of Service</a>
                                 and
-                                <a href="#" class="text-indigo-600 hover:text-indigo-500">Privacy Policy</a>
+                                <a href="/privacy-policy" class="text-indigo-600 hover:text-indigo-500">Privacy Policy</a>
                             </label>
                         </div>
 
                         <button type="submit" :disabled="form.processing" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 transition">
-                            <svg v-if="form.processing" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+                            <svg aria-hidden="true" v-if="form.processing" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
                                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                             </svg>

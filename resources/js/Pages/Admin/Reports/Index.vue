@@ -52,7 +52,7 @@ const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
                         <div v-else class="space-y-3">
                             <div v-for="(teacher, index) in topTeachers" :key="teacher.id" class="flex items-center justify-between">
                                 <div class="flex items-center gap-3">
-                                    <span class="text-lg font-bold text-gray-400">{{ index + 1 }}</span>
+                                    <span class="text-lg font-bold text-gray-500">{{ index + 1 }}</span>
                                     <div>
                                         <p class="font-medium">{{ teacher.user?.name }}</p>
                                         <p class="text-sm text-gray-500">{{ teacher.bookings_count }} completed sessions</p>

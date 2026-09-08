@@ -75,13 +75,13 @@ const cancel = () => {
                     <!-- Payment Screenshot -->
                     <div v-if="booking.screenshot_path">
                         <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Payment Screenshot</p>
-                        <img :src="booking.screenshot_path?.startsWith('http') || booking.screenshot_path?.startsWith('data:') ? booking.screenshot_path : '/storage/' + booking.screenshot_path" class="max-w-full h-auto rounded-lg border" />
+                        <img :src="booking.screenshot_path?.startsWith('http') || booking.screenshot_path?.startsWith('data:') ? booking.screenshot_path : '/storage/' + booking.screenshot_path" class="max-w-full h-auto rounded-lg border" alt="Payment screenshot" />
                     </div>
 
                     <!-- Join Meeting -->
                     <div v-if="canJoin" class="p-4 bg-green-50 border border-green-200 rounded-lg">
-                        <a :href="booking.teacher?.zoom_link" target="_blank" class="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700">
-                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <a :href="booking.teacher?.zoom_link" target="_blank" class="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                            <svg aria-hidden="true" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                             </svg>
                             Join Zoom Meeting
@@ -99,13 +99,13 @@ const cancel = () => {
 
                     <!-- Actions -->
                     <div class="flex gap-3 pt-2">
-                        <a v-if="canReview" :href="'/student/bookings/' + booking.id + '/review'" class="px-4 py-2 text-sm font-medium text-white bg-yellow-600 rounded-lg hover:bg-yellow-700">
+                        <a v-if="canReview" :href="'/student/bookings/' + booking.id + '/review'" class="px-4 py-2 text-sm font-medium text-white bg-yellow-600 rounded-lg hover:bg-yellow-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                             Leave Review
                         </a>
-                        <button v-if="canCancel" @click="cancel" class="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700">
+                        <button v-if="canCancel" @click="cancel" class="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                             Cancel Booking
                         </button>
-                        <a href="/student/bookings" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200">
+                        <a href="/student/bookings" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                             Back
                         </a>
                     </div>

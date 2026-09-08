@@ -122,6 +122,11 @@ onMounted(() => {
 
 <template>
     <div class="flex min-h-screen bg-gray-100">
+        <!-- Skip to content link -->
+        <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:bg-indigo-600 focus:text-white focus:px-4 focus:py-2 focus:rounded-lg focus:text-sm focus:font-medium">
+            Skip to main content
+        </a>
+
         <!-- Mobile sidebar overlay -->
         <div v-if="sidebarOpen" class="fixed inset-0 z-40 bg-black/50 lg:hidden" @click="sidebarOpen = false"></div>
 
@@ -134,7 +139,7 @@ onMounted(() => {
                 <!-- Logo -->
                 <div class="flex items-center gap-3 px-6 py-5 border-b border-gray-100">
                     <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center flex-shrink-0">
-                        <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg aria-hidden="true" class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                         </svg>
                     </div>
@@ -145,17 +150,20 @@ onMounted(() => {
                 </div>
 
                 <!-- Navigation -->
-                <nav class="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+                <nav class="flex-1 px-3 py-4 space-y-1 overflow-y-auto" aria-label="Main navigation">
                     <div
                         v-for="item in navigation"
                         :key="item.name"
                         @click="item.action === 'profile' ? openProfileModal() : goTo(item.href)"
+                        @keydown.enter="item.action === 'profile' ? openProfileModal() : goTo(item.href)"
+                        role="button"
+                        tabindex="0"
                         class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium cursor-pointer select-none"
                         :class="item.action === 'profile' ? 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' : (isActive(item.href) ? 'bg-indigo-50 text-indigo-700' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900')"
                     >
-                        <svg
+                        <svg aria-hidden="true"
                             class="w-5 h-5 flex-shrink-0"
-                            :class="item.action === 'profile' ? 'text-gray-400' : (isActive(item.href) ? 'text-indigo-600' : 'text-gray-400')"
+                            :class="item.action === 'profile' ? 'text-gray-500' : (isActive(item.href) ? 'text-indigo-600' : 'text-gray-500')"
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
@@ -170,7 +178,7 @@ onMounted(() => {
                 <div class="border-t border-gray-100 px-3 py-4">
                     <div class="flex items-center gap-3 px-3 py-2">
                         <div class="w-9 h-9 bg-indigo-100 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden">
-                            <img v-if="profilePic" :src="imageUrl(profilePic)" class="w-9 h-9 rounded-full object-cover" />
+                            <img v-if="profilePic" :src="imageUrl(profilePic)" class="w-9 h-9 rounded-full object-cover" alt="Profile picture" />
                             <span v-else class="text-sm font-semibold text-indigo-700">{{ user?.name?.charAt(0)?.toUpperCase() }}</span>
                         </div>
                         <div class="flex-1 min-w-0">
@@ -181,9 +189,12 @@ onMounted(() => {
                     <div class="mt-2 space-y-1">
                         <div
                             @click="openSettingsModal"
+                            @keydown.enter="openSettingsModal"
+                            role="button"
+                            tabindex="0"
                             class="flex items-center gap-2 px-3 py-2 text-sm text-gray-600 rounded-lg hover:bg-gray-50 hover:text-gray-900 cursor-pointer select-none"
                         >
-                            <svg class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg aria-hidden="true" class="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
@@ -195,7 +206,7 @@ onMounted(() => {
                                 type="submit"
                                 class="flex items-center gap-2 w-full px-3 py-2 text-sm text-red-600 rounded-lg hover:bg-red-50 text-left"
                             >
-                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <svg aria-hidden="true" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                                 </svg>
                                 Log Out
@@ -207,15 +218,16 @@ onMounted(() => {
         </aside>
 
         <!-- Main content -->
-        <div class="flex-1 flex flex-col min-w-0">
+        <div id="main-content" class="flex-1 flex flex-col min-w-0" tabindex="-1">
             <!-- Top bar -->
             <header class="sticky top-0 z-30 bg-white border-b border-gray-200 shadow-sm">
                 <div class="flex items-center justify-between px-4 py-3 lg:px-6">
                     <button
                         @click="sidebarOpen = true"
-                        class="lg:hidden p-2 rounded-lg text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                        class="lg:hidden p-2 rounded-lg text-gray-500 hover:bg-gray-100 hover:text-gray-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        aria-label="Open navigation menu"
                     >
-                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg aria-hidden="true" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
                     </button>
@@ -231,11 +243,11 @@ onMounted(() => {
                             <template #trigger>
                                 <button class="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100">
                                     <div class="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center overflow-hidden">
-                                        <img v-if="profilePic" :src="imageUrl(profilePic)" class="w-8 h-8 rounded-full object-cover" />
+                                        <img v-if="profilePic" :src="imageUrl(profilePic)" class="w-8 h-8 rounded-full object-cover" alt="Profile picture" />
                                         <span v-else class="text-sm font-semibold text-indigo-700">{{ user?.name?.charAt(0)?.toUpperCase() }}</span>
                                     </div>
                                     <span class="hidden sm:block text-sm font-medium text-gray-700">{{ user?.name }}</span>
-                                    <svg class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <svg aria-hidden="true" class="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                                     </svg>
                                 </button>

@@ -18,13 +18,39 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
+    $teacherCount = \App\Models\TeacherProfile::where('approval_status', 'approved')->count();
+    $completedBookings = \App\Models\Booking::where('status', 'completed')->count();
+    $averageRating = \App\Models\Review::avg('rating');
+    $averageRating = $averageRating ? round($averageRating, 1) : 0;
+
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
+        'stats' => [
+            'teacherCount' => $teacherCount,
+            'completedBookings' => $completedBookings,
+            'averageRating' => $averageRating,
+        ],
     ]);
 });
+
+Route::get('/privacy-policy', function () {
+    return Inertia::render('Legal/PrivacyPolicy');
+})->name('privacy-policy');
+
+Route::get('/terms-and-conditions', function () {
+    return Inertia::render('Legal/TermsConditions');
+})->name('terms-and-conditions');
+
+Route::get('/cookie-policy', function () {
+    return Inertia::render('Legal/CookiePolicy');
+})->name('cookie-policy');
+
+Route::get('/refund-policy', function () {
+    return Inertia::render('Legal/RefundPolicy');
+})->name('refund-policy');
 
 Route::get('/dashboard', function () {
     $user = auth()->user();

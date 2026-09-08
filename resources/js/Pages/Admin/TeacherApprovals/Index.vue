@@ -61,16 +61,16 @@ const reject = (teacher) => {
                                     <p class="text-sm font-medium text-gray-700">Certificates:</p>
                                     <ul class="mt-1 space-y-1">
                                         <li v-for="cert in teacher.certificates" :key="cert.id" class="text-sm text-gray-600">
-                                            {{ cert.title }} <span v-if="cert.issued_by" class="text-gray-400">({{ cert.issued_by }})</span>
+                                            {{ cert.title }} <span v-if="cert.issued_by" class="text-gray-500">({{ cert.issued_by }})</span>
                                         </li>
                                     </ul>
                                 </div>
                             </div>
                             <div class="flex gap-3">
-                                <button @click="approve(teacher)" class="px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-md hover:bg-green-700">
+                                <button @click="approve(teacher)" class="px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-md hover:bg-green-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                                     Approve
                                 </button>
-                                <button @click="reject(teacher)" class="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700">
+                                <button @click="reject(teacher)" class="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                                     Reject
                                 </button>
                             </div>

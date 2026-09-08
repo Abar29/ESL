@@ -68,12 +68,12 @@ const deleteCert = (cert) => {
                 </div>
                 <div class="p-6 flex items-center gap-6">
                     <div class="w-20 h-20 rounded-full bg-indigo-100 flex items-center justify-center flex-shrink-0 overflow-hidden">
-                        <img v-if="profile?.profile_pic" :src="profile.profile_pic.startsWith('http') || profile.profile_pic.startsWith('data:') ? profile.profile_pic : '/storage/' + profile.profile_pic" class="w-20 h-20 rounded-full object-cover" />
+                        <img v-if="profile?.profile_pic" :src="profile.profile_pic.startsWith('http') || profile.profile_pic.startsWith('data:') ? profile.profile_pic : '/storage/' + profile.profile_pic" class="w-20 h-20 rounded-full object-cover" alt="Profile picture" />
                         <span v-else class="text-2xl font-bold text-indigo-600">{{ $page.props.auth.user?.name?.charAt(0)?.toUpperCase() }}</span>
                     </div>
                     <div>
-                        <label class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 cursor-pointer">
-                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <label class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 cursor-pointer focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                            <svg aria-hidden="true" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
                             Upload Picture
@@ -134,7 +134,7 @@ const deleteCert = (cert) => {
                     </div>
 
                     <div class="flex items-center gap-3">
-                        <button type="submit" :disabled="form.processing" class="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 disabled:opacity-50">
+                        <button type="submit" :disabled="form.processing" class="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 disabled:opacity-50 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                             Save Profile
                         </button>
                         <span v-if="saved" class="text-sm text-green-600 font-medium">Saved!</span>
@@ -146,7 +146,7 @@ const deleteCert = (cert) => {
             <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
                 <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
                     <h3 class="font-semibold text-gray-900">Certificates</h3>
-                    <button @click="showCertForm = !showCertForm" class="text-sm font-medium text-indigo-600 hover:text-indigo-700">
+                    <button @click="showCertForm = !showCertForm" class="text-sm font-medium text-indigo-600 hover:text-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                         {{ showCertForm ? 'Cancel' : '+ Add Certificate' }}
                     </button>
                 </div>
@@ -168,7 +168,7 @@ const deleteCert = (cert) => {
                                 <label for="cert_file" class="block text-sm font-medium text-gray-700 mb-1">Certificate File</label>
                                 <input type="file" id="cert_file" @change="handleCertFile" accept=".pdf,.jpg,.jpeg,.png" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" required />
                             </div>
-                            <button type="submit" :disabled="certForm.processing" class="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 disabled:opacity-50">
+                            <button type="submit" :disabled="certForm.processing" class="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 disabled:opacity-50 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                                 Upload
                             </button>
                         </form>
@@ -178,7 +178,7 @@ const deleteCert = (cert) => {
                     <div v-if="profile?.certificates?.length" class="space-y-2">
                         <div v-for="cert in profile.certificates" :key="cert.id" class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                             <div class="flex items-center gap-3">
-                                <svg class="w-5 h-5 text-green-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <svg aria-hidden="true" class="w-5 h-5 text-green-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4" />
                                 </svg>
                                 <div>
@@ -186,7 +186,7 @@ const deleteCert = (cert) => {
                                     <p v-if="cert.issued_by" class="text-xs text-gray-500">{{ cert.issued_by }}</p>
                                 </div>
                             </div>
-                            <button @click="deleteCert(cert)" class="text-xs font-medium text-red-600 hover:text-red-700">Delete</button>
+                            <button @click="deleteCert(cert)" class="text-xs font-medium text-red-600 hover:text-red-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Delete</button>
                         </div>
                     </div>
                     <p v-else class="text-sm text-gray-500">No certificates uploaded yet.</p>

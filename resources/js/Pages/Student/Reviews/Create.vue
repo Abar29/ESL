@@ -59,7 +59,7 @@ const submit = () => {
                                 @click="form.rating = star"
                                 @mouseenter="hoverRating = star"
                                 @mouseleave="hoverRating = 0"
-                                class="text-4xl focus:outline-none transition-transform hover:scale-110"
+                                class="text-4xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-transform hover:scale-110"
                                 :class="(hoverRating || form.rating) >= star ? 'text-yellow-400' : 'text-gray-300'"
                             >
                                 ★
@@ -83,13 +83,13 @@ const submit = () => {
 
                     <!-- Actions -->
                     <div class="flex justify-end gap-3 pt-2">
-                        <a :href="'/student/bookings/' + booking.id" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200">
+                        <a :href="'/student/bookings/' + booking.id" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                             Cancel
                         </a>
                         <button
                             type="submit"
                             :disabled="form.processing"
-                            class="px-5 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 disabled:opacity-50"
+                            class="px-5 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 disabled:opacity-50 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                         >
                             Submit Review
                         </button>

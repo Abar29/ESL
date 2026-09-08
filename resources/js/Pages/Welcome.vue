@@ -4,6 +4,7 @@ import { Head, Link } from '@inertiajs/vue3';
 defineProps({
     canLogin: Boolean,
     canRegister: Boolean,
+    stats: Object,
 });
 </script>
 
@@ -17,7 +18,7 @@ defineProps({
                 <div class="flex justify-between h-16 items-center">
                     <div class="flex items-center gap-2">
                         <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center">
-                            <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg aria-hidden="true" class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                             </svg>
                         </div>
@@ -50,7 +51,7 @@ defineProps({
                         </span>
                     </h1>
                     <p class="mt-6 text-xl text-gray-600 max-w-2xl mx-auto">
-                        Book personalized ESL sessions with qualified teachers. Flexible scheduling, affordable rates, and proven results.
+                        Book personalized ESL sessions with qualified teachers. Flexible scheduling, affordable rates, and quality instruction.
                     </p>
                     <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
                         <Link :href="route('register')" class="px-8 py-4 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 font-semibold text-lg transition shadow-lg shadow-indigo-200">
@@ -80,7 +81,7 @@ defineProps({
                     <!-- Step 1 -->
                     <div class="text-center p-8 rounded-2xl bg-gray-50 hover:bg-indigo-50 transition">
                         <div class="w-16 h-16 bg-indigo-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                            <svg class="w-8 h-8 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg aria-hidden="true" class="w-8 h-8 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                             </svg>
                         </div>
@@ -91,7 +92,7 @@ defineProps({
                     <!-- Step 2 -->
                     <div class="text-center p-8 rounded-2xl bg-gray-50 hover:bg-indigo-50 transition">
                         <div class="w-16 h-16 bg-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                            <svg class="w-8 h-8 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg aria-hidden="true" class="w-8 h-8 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
                         </div>
@@ -102,7 +103,7 @@ defineProps({
                     <!-- Step 3 -->
                     <div class="text-center p-8 rounded-2xl bg-gray-50 hover:bg-indigo-50 transition">
                         <div class="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                            <svg class="w-8 h-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg aria-hidden="true" class="w-8 h-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                             </svg>
                         </div>
@@ -122,19 +123,19 @@ defineProps({
                         <p class="text-indigo-100 text-lg mb-8">Join our platform as an ESL teacher and connect with students worldwide. Set your own hours, rates, and availability.</p>
                         <ul class="space-y-4">
                             <li class="flex items-center gap-3 text-white">
-                                <svg class="w-6 h-6 text-green-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <svg aria-hidden="true" class="w-6 h-6 text-green-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                                 </svg>
                                 Set your own schedule
                             </li>
                             <li class="flex items-center gap-3 text-white">
-                                <svg class="w-6 h-6 text-green-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <svg aria-hidden="true" class="w-6 h-6 text-green-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                                 </svg>
                                 Receive payments via GCash, GoTyme, or Maya
                             </li>
                             <li class="flex items-center gap-3 text-white">
-                                <svg class="w-6 h-6 text-green-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <svg aria-hidden="true" class="w-6 h-6 text-green-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                                 </svg>
                                 Build your teaching profile and ratings
@@ -154,9 +155,6 @@ defineProps({
                                         <div class="h-3 w-24 bg-white/20 rounded mt-2"></div>
                                     </div>
                                 </div>
-                                <div class="flex gap-1">
-                                    <span class="text-yellow-300 text-xl">★★★★★</span>
-                                </div>
                                 <div class="h-20 bg-white/10 rounded-lg"></div>
                             </div>
                         </div>
@@ -168,22 +166,18 @@ defineProps({
         <!-- Stats Section -->
         <div class="py-16 bg-white">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-8 text-center">
                     <div>
-                        <div class="text-4xl font-bold text-indigo-600">50+</div>
+                        <div class="text-4xl font-bold text-indigo-600">{{ stats?.teacherCount || 0 }}+</div>
                         <div class="mt-2 text-gray-600">Qualified Teachers</div>
                     </div>
                     <div>
-                        <div class="text-4xl font-bold text-indigo-600">1000+</div>
+                        <div class="text-4xl font-bold text-indigo-600">{{ stats?.completedBookings || 0 }}+</div>
                         <div class="mt-2 text-gray-600">Sessions Completed</div>
                     </div>
                     <div>
-                        <div class="text-4xl font-bold text-indigo-600">4.8</div>
+                        <div class="text-4xl font-bold text-indigo-600">{{ stats?.averageRating || '0.0' }}</div>
                         <div class="mt-2 text-gray-600">Average Rating</div>
-                    </div>
-                    <div>
-                        <div class="text-4xl font-bold text-indigo-600">24/7</div>
-                        <div class="mt-2 text-gray-600">Flexible Schedule</div>
                     </div>
                 </div>
             </div>
@@ -193,7 +187,7 @@ defineProps({
         <div class="py-24 bg-gray-50">
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                 <h2 class="text-3xl font-bold text-gray-900 mb-6">Ready to Start Learning?</h2>
-                <p class="text-lg text-gray-600 mb-10">Join thousands of students improving their English skills with our expert teachers.</p>
+                <p class="text-lg text-gray-600 mb-10">Join our learning community and improve your English skills with our expert teachers.</p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
                     <Link :href="route('register')" class="px-10 py-4 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 font-semibold text-lg transition shadow-lg shadow-indigo-200">
                         Create Free Account
@@ -208,18 +202,40 @@ defineProps({
         <!-- Footer -->
         <footer class="bg-gray-900 text-gray-400 py-12">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex flex-col md:flex-row justify-between items-center">
-                    <div class="flex items-center gap-2 mb-4 md:mb-0">
-                        <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
-                            <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                            </svg>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                    <div>
+                        <div class="flex items-center gap-2 mb-4">
+                            <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
+                                <svg aria-hidden="true" class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                </svg>
+                            </div>
+                            <span class="text-white font-semibold">ESL Scheduler</span>
                         </div>
-                        <span class="text-white font-semibold">ESL Scheduler</span>
+                        <p class="text-sm leading-relaxed">
+                            Individual ESL<br />
+                            Email: <a href="mailto:ESLindiv@gmail.com" class="hover:text-white">ESLindiv@gmail.com</a>
+                        </p>
                     </div>
-                    <div class="text-sm">
-                        © 2026 ESL Scheduler. All rights reserved.
+                    <div>
+                        <h4 class="text-white font-semibold text-sm mb-4">Legal</h4>
+                        <ul class="space-y-2 text-sm">
+                            <li><Link href="/privacy-policy" class="hover:text-white">Privacy Policy</Link></li>
+                            <li><Link href="/terms-and-conditions" class="hover:text-white">Terms and Conditions</Link></li>
+                            <li><Link href="/cookie-policy" class="hover:text-white">Cookie Policy</Link></li>
+                            <li><Link href="/refund-policy" class="hover:text-white">Refund Policy</Link></li>
+                        </ul>
                     </div>
+                    <div>
+                        <h4 class="text-white font-semibold text-sm mb-4">Platform</h4>
+                        <ul class="space-y-2 text-sm">
+                            <li><Link href="/register" class="hover:text-white">Get Started</Link></li>
+                            <li><Link href="/login" class="hover:text-white">Sign In</Link></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="border-t border-gray-800 pt-6 text-center text-sm">
+                    &copy; 2026 Individual ESL. All rights reserved.
                 </div>
             </div>
         </footer>

@@ -36,7 +36,7 @@ const statusColor = (status) => {
                         <div>
                             <p class="font-medium text-gray-900">{{ booking.student?.name }}</p>
                             <p class="text-sm text-gray-500">{{ booking.slot?.slot_date ? new Date(booking.slot.slot_date.includes('T') ? booking.slot.slot_date : booking.slot.slot_date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '' }} | {{ booking.slot?.start_time }} - {{ booking.slot?.end_time }}</p>
-                            <p v-if="booking.payment_reference" class="text-sm text-gray-400">Ref: {{ booking.payment_reference }}</p>
+                            <p v-if="booking.payment_reference" class="text-sm text-gray-500">Ref: {{ booking.payment_reference }}</p>
                         </div>
                         <div class="flex items-center gap-3">
                             <span :class="[statusColor(booking.status), 'px-2 py-1 text-xs font-medium rounded-full']">
@@ -62,7 +62,7 @@ const statusColor = (status) => {
                     ></a>
                     <span
                         v-else
-                        class="px-3 py-2 text-sm rounded-lg text-gray-400"
+                        class="px-3 py-2 text-sm rounded-lg text-gray-500"
                         v-html="link.label"
                     ></span>
                 </template>

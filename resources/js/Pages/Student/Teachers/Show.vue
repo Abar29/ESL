@@ -84,7 +84,7 @@ const submit = () => {
                     <div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
                         <div class="p-6 text-center">
                             <div class="w-20 h-20 rounded-full bg-indigo-100 flex items-center justify-center mx-auto mb-4 overflow-hidden">
-                                <img v-if="teacher.profile_pic" :src="teacher.profile_pic.startsWith('http') || teacher.profile_pic.startsWith('data:') ? teacher.profile_pic : '/storage/' + teacher.profile_pic" class="w-20 h-20 rounded-full object-cover" />
+                                <img v-if="teacher.profile_pic" :src="teacher.profile_pic.startsWith('http') || teacher.profile_pic.startsWith('data:') ? teacher.profile_pic : '/storage/' + teacher.profile_pic" class="w-20 h-20 rounded-full object-cover" alt="Teacher profile picture" />
                                 <span v-else class="text-3xl font-bold text-indigo-600">{{ teacher.user?.name?.charAt(0)?.toUpperCase() }}</span>
                             </div>
                             <h3 class="text-lg font-semibold text-gray-900">{{ teacher.user?.name }}</h3>
@@ -105,10 +105,10 @@ const submit = () => {
                                 <h4 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Certificates</h4>
                                 <ul class="space-y-1">
                                     <li v-for="cert in teacher.certificates" :key="cert.id" class="text-sm text-gray-600 flex items-center gap-1">
-                                        <svg class="w-3.5 h-3.5 text-green-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <svg aria-hidden="true" class="w-3.5 h-3.5 text-green-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4" />
                                         </svg>
-                                        {{ cert.title }}<span v-if="cert.issued_by" class="text-gray-400"> — {{ cert.issued_by }}</span>
+                                        {{ cert.title }}<span v-if="cert.issued_by" class="text-gray-500"> — {{ cert.issued_by }}</span>
                                     </li>
                                 </ul>
                             </div>
@@ -124,7 +124,7 @@ const submit = () => {
                         </div>
 
                         <div v-if="!slots || slots.length === 0" class="p-12 text-center">
-                            <svg class="w-10 h-10 text-gray-300 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg aria-hidden="true" class="w-10 h-10 text-gray-300 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
                             <p class="text-gray-500">No available slots at the moment.</p>
@@ -138,7 +138,7 @@ const submit = () => {
                                 </div>
                                 <div class="flex items-center gap-4">
                                     <span class="text-lg font-bold text-indigo-600">₱750</span>
-                                    <button @click="openBooking(slot)" class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700">
+                                    <button @click="openBooking(slot)" class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                                         Book Now
                                     </button>
                                 </div>
@@ -155,8 +155,8 @@ const submit = () => {
                 <!-- Modal Header -->
                 <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
                     <h3 class="text-lg font-semibold text-gray-900">Book Session</h3>
-                    <button @click="closeBooking" class="p-1 text-gray-400 hover:text-gray-600 rounded-lg">
-                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <button @click="closeBooking" class="p-1 text-gray-500 hover:text-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                        <svg aria-hidden="true" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </button>
@@ -224,13 +224,13 @@ const submit = () => {
 
                     <!-- Actions -->
                     <div class="flex justify-end gap-3 pt-2">
-                        <button type="button" @click="closeBooking" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200">
+                        <button type="button" @click="closeBooking" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                             Cancel
                         </button>
                         <button
                             type="submit"
                             :disabled="form.processing"
-                            class="px-5 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 disabled:opacity-50"
+                            class="px-5 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 disabled:opacity-50 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                         >
                             Submit Booking
                         </button>

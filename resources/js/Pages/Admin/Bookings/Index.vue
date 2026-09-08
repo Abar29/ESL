@@ -53,12 +53,12 @@ const statusColor = (status) => {
                 <div class="bg-white shadow-sm sm:rounded-lg p-4 mb-6">
                     <div class="flex gap-4 items-end">
                         <div class="flex-1">
-                            <label class="block text-sm font-medium text-gray-700">Search</label>
-                            <input v-model="search" type="text" placeholder="Student/Teacher name or ref #" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm text-sm" />
+                            <label for="booking-search" class="block text-sm font-medium text-gray-700">Search</label>
+                            <input v-model="search" type="text" id="booking-search" placeholder="Student/Teacher name or ref #" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm text-sm" />
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Status</label>
-                            <select v-model="status" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm text-sm">
+                            <label for="booking-status" class="block text-sm font-medium text-gray-700">Status</label>
+                            <select v-model="status" id="booking-status" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm text-sm">
                                 <option value="">All</option>
                                 <option value="pending_payment">Pending Payment</option>
                                 <option value="pending_verification">Pending Verification</option>
@@ -68,7 +68,7 @@ const statusColor = (status) => {
                                 <option value="cancelled">Cancelled</option>
                             </select>
                         </div>
-                        <button @click="filterBookings" class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700">
+                        <button @click="filterBookings" class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                             Filter
                         </button>
                     </div>
@@ -108,7 +108,7 @@ const statusColor = (status) => {
                                 </td>
                                 <td class="px-4 py-3 text-right">
                                     <Link :href="route('admin.bookings.show', booking.id)" class="text-indigo-600 hover:text-indigo-900 text-sm mr-2">View</Link>
-                                    <button v-if="['pending_payment', 'pending_verification', 'confirmed'].includes(booking.status)" @click="cancelBooking(booking)" class="text-red-600 hover:text-red-900 text-sm">Cancel</button>
+                                    <button v-if="['pending_payment', 'pending_verification', 'confirmed'].includes(booking.status)" @click="cancelBooking(booking)" class="text-red-600 hover:text-red-900 text-sm focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Cancel</button>
                                 </td>
                             </tr>
                         </tbody>
